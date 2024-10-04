@@ -20,10 +20,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import ciu.grupo1.filter.JwtAuthFilter;
 import ciu.grupo1.service.UserInfoService;
 
-
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity
+@EnableMethodSecurity(securedEnabled=true)
 public class SecurityConfig {
 	
     @Autowired
@@ -39,9 +38,7 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable()) // Disable CSRF for stateless APIs
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/auth/welcome", "/auth/addNewUser", "/auth/generateToken").permitAll()
-                .requestMatchers("/auth/user/**").hasAuthority("ROLE_USER")
-                .requestMatchers("/auth/admin/**").hasAuthority("ROLE_ADMIN")
+                .requestMatchers("/auth/welcome", "/auth/login", "/auth/addNewUser", "/auth/generateToken").permitAll()
                 .anyRequest().authenticated() // Protect all other endpoints
             )
             .sessionManagement(sess -> sess
