@@ -6,10 +6,12 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import ciu.grupo1.model.UserInfo;
@@ -41,17 +43,23 @@ public class UserController {
         return service.addUser(userInfo);
     }
 
-    @GetMapping("/user/userProfile")
+    @GetMapping("/userProfile")
     @PreAuthorize("hasAuthority('ROLE_USER')")
     public String userProfile() {
         return "Welcome to User Profile";
     }
 
-    @GetMapping("/admin/adminProfile")
+    @GetMapping("/adminProfile")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public String adminProfile() {
         return "Welcome to Admin Profile";
     }
+    
+//    @PostMapping("/login")
+//    @PreAuthorize("hasAuthority('ROLE_USER')")
+//    public String login(@RequestBody UserInfo userInfo) {
+//    	return service.loadUserByUsername(userInfo.getEmail());
+//    }
 
     @PostMapping("/generateToken")
     public String authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
