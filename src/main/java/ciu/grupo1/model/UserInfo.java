@@ -14,6 +14,7 @@ public class UserInfo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
+    private String lastName;
     private String email;
     private String password;
     private String roles;
@@ -46,5 +47,11 @@ public class UserInfo {
 	}
 	public void setRoles(String roles) {
 		this.roles = roles;
+	}
+	public String getLastName() {
+		return lastName;
+	}
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 }
