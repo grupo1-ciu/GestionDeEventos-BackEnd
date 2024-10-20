@@ -25,18 +25,17 @@ CREATE TABLE eventos.roles (
 );
 
 CREATE TABLE eventos.usuarios (
-	id INT NOT NULL AUTO_INCREMENT,
+	id UUID NOT NULL,
 	nombre VARCHAR(100) NOT NULL,
-	nombre2 VARCHAR(100) DEFAULT NULL,
 	apellido VARCHAR(100) NOT NULL,
-	email VARCHAR(100) NOT NULL,
+	email VARCHAR(100) NOT NULL UNIQUE,
 	password VARCHAR(100) NOT NULL,
 	CONSTRAINT id_usuario_pkey PRIMARY KEY (id)
 );
 
 CREATE TABLE eventos.usuarios_roles(
 	id INT NOT NULL AUTO_INCREMENT,
-	id_usuario INT NOT NULL,
+	id_usuario UUID NOT NULL,
 	id_rol INT NOT NULL,
 	CONSTRAINT id_usuario_rol_pkey PRIMARY KEY (id),
 	CONSTRAINT usuariosroles_usuarios_fkey FOREIGN KEY (id_usuario) REFERENCES eventos.usuarios(id),
@@ -44,7 +43,7 @@ CREATE TABLE eventos.usuarios_roles(
 );
 
 CREATE TABLE eventos.salas(
-	id INT NOT NULL,
+	id UUID NOT NULL,
 	nombre VARCHAR(100) NOT NULL,
 	capacidad INT(50) NOT NULL,
 	direccion VARCHAR(320) NOT NULL,
@@ -52,8 +51,8 @@ CREATE TABLE eventos.salas(
 );
 
 CREATE TABLE eventos.eventos(
-	id INT NOT NULL AUTO_INCREMENT,
-	sala INT NOT NULL,
+	id UUID NOT NULL,
+	sala UUID NOT NULL,
 	fecha_evento DATE NOT NULL,
 	hora_inicio DATETIME NOT NULL,
 	hora_fin DATETIME NOT NULL,
@@ -66,9 +65,9 @@ CREATE TABLE eventos.eventos(
 );
 
 CREATE TABLE eventos.inscripciones(
-	id INT NOT NULL AUTO_INCREMENT,
-	id_usuario INT NOT NULL,
-	id_evento INT NOT NULL,
+	id UUID NOT NULL,
+	id_usuario UUID NOT NULL,
+	id_evento UUID NOT NULL,
 	id_estado_inscripcion INT NOT NULL,
 	CONSTRAINT id_inscripcion_pkey PRIMARY KEY (id),
 	CONSTRAINT inscripciones_usuario_fkey FOREIGN KEY (id_usuario) REFERENCES eventos.usuarios(id),
@@ -95,8 +94,8 @@ INSERT INTO eventos.estados_inscripciones (nombre) VALUES
 	('cancelada'),
 	('concretada');
 	
-INSERT INTO eventos.usuarios (nombre, nombre2, apellido, email, password) VALUES
-	('root', NULL, 'root', 'root@root', 'root');
+INSERT INTO eventos.usuarios (id, nombre, apellido, email, password) VALUES
+	(uuid(),'root', 'root', 'root@root', 'root');
 	
 INSERT INTO eventos.usuarios_roles (id_usuario, id_rol) VALUES
 	((SELECT id FROM eventos.usuarios WHERE email = 'root@root'),
@@ -104,5 +103,5 @@ INSERT INTO eventos.usuarios_roles (id_usuario, id_rol) VALUES
 	((SELECT id FROM eventos.usuarios WHERE email = 'root@root'),
 	(SELECT id FROM eventos.roles WHERE nombre = 'ROLE_ADMIN')),
 	((SELECT id FROM eventos.usuarios WHERE email = 'root@root'),
-	(SELECT id FROM eventos.roles WHERE nombre = 'ROLE_OPERATOR'));	
+	(SELECT id FROM eventos.roles WHERE nombre = 'ROLE_OPERATOR'));
 	

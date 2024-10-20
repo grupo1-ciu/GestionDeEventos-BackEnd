@@ -1,26 +1,22 @@
 package ciu.grupo1.model;
 
 import java.util.List;
+import java.util.UUID;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Index;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "UserInfo", schema = "eventos", indexes = {
-		@Index(name = "index_UserInfo_email", columnList = "email", unique = true) })
-public class UserInfo {
+@Table(name = "UserInfo", schema = "eventos")
+public class Usuario {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
-	private String name;
-	private String lastName;
+	private UUID id;
+	private String nombre;
+	private String apellido;
 	private String email;
 	private String password;
 	private String roles;
@@ -28,20 +24,28 @@ public class UserInfo {
 	@OneToMany(mappedBy = "UserInfo", cascade = CascadeType.ALL)
 	private List<Inscripcion >inscripciones;
 	
-	public int getId() {
+	public UUID getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(UUID id) {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getNombre() {
+		return nombre;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setNombre(String name) {
+		this.nombre = name;
+	}
+	
+	public String getApellido() {
+		return apellido;
+	}
+	
+	public void setApellido(String apellido) {
+		this.apellido = apellido;
 	}
 
 	public String getEmail() {
@@ -66,13 +70,5 @@ public class UserInfo {
 
 	public void setRoles(String roles) {
 		this.roles = roles;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
 	}
 }

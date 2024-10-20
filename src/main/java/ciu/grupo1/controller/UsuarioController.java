@@ -6,26 +6,24 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import ciu.grupo1.model.UserInfo;
+import ciu.grupo1.model.Usuario;
 import ciu.grupo1.request.AuthRequest;
 import ciu.grupo1.service.JwtService;
-import ciu.grupo1.service.UserInfoService;
+import ciu.grupo1.service.UsuarioService;
 
 
 @RestController
 @RequestMapping("/auth")
-public class UserController {
+public class UsuarioController {
 
     @Autowired
-    private UserInfoService service;
+    private UsuarioService usuarioService;
 
     @Autowired
     private JwtService jwtService;
@@ -39,8 +37,8 @@ public class UserController {
     }
 
     @PostMapping("/addNewUser")
-    public String addNewUser(@RequestBody UserInfo userInfo) {
-        return service.addUser(userInfo);
+    public String addNewUser(@RequestBody Usuario usuarioDto) { //TODO: Modificar para UsuarioDto.
+        return usuarioService.addUser(usuarioDto);
     }
 
     @GetMapping("/userProfile")

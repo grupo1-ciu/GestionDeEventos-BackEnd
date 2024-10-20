@@ -9,32 +9,32 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import ciu.grupo1.model.UserInfo;
-import ciu.grupo1.repository.UserInfoRepository;
+import ciu.grupo1.model.Usuario;
+import ciu.grupo1.repository.UsuarioRepository;
 import ciu.grupo1.security.UserInfoDetails;
 
 @Service
-public class UserInfoService implements UserDetailsService {
+public class UsuarioService implements UserDetailsService {
 
     @Autowired
-    private UserInfoRepository repository;
+    private UsuarioRepository usuarioRepository;
 
     @Autowired
     private PasswordEncoder encoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<UserInfo> userDetail = repository.findByEmail(username); // Assuming 'email' is used as username
+        Optional<Usuario> userDetail = usuarioRepository.findByEmail(username); // Asumiendo que el 'email' es usado como nombre de usuario.
 
         // Converting UserInfo to UserDetails
         return userDetail.map(UserInfoDetails::new)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
     }
 
-    public String addUser(UserInfo userInfo) {
+    public String addUser(Usuario usuario) {
         // Encode password before saving the user
-        userInfo.setPassword(encoder.encode(userInfo.getPassword()));
-        repository.save(userInfo);
+        usuario.setPassword(encoder.encode(usuario.getPassword()));
+        usuarioRepository.save(usuario);
         return "User Added Successfully";
     }
 }

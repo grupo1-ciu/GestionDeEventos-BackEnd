@@ -18,7 +18,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import ciu.grupo1.filter.JwtAuthFilter;
-import ciu.grupo1.service.UserInfoService;
+import ciu.grupo1.service.UsuarioService;
 
 @Configuration
 @EnableWebSecurity
@@ -30,7 +30,7 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return new UserInfoService(); // Ensure UserInfoService implements UserDetailsService
+        return new UsuarioService(); // Ensure UserInfoService implements UserDetailsService
     }
 
     @Bean
