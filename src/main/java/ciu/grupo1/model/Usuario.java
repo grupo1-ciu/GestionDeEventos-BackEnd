@@ -3,14 +3,13 @@ package ciu.grupo1.model;
 import java.util.List;
 import java.util.UUID;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "UserInfo", schema = "eventos")
+@Table(name = "usuarios", schema = "eventos")
 public class Usuario {
 
 	@Id
@@ -19,10 +18,12 @@ public class Usuario {
 	private String apellido;
 	private String email;
 	private String password;
-	private String roles;
 	
-	@OneToMany(mappedBy = "UserInfo", cascade = CascadeType.ALL)
-	private List<Inscripcion >inscripciones;
+	@OneToMany(mappedBy="usuario")
+	private List<UsuarioRol> roles;
+	
+	@OneToMany(mappedBy = "usuario")
+	private List<Inscripcion> inscripciones;
 	
 	public UUID getId() {
 		return id;
@@ -64,11 +65,11 @@ public class Usuario {
 		this.password = password;
 	}
 
-	public String getRoles() {
+	public List<UsuarioRol> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(String roles) {
+	public void setRoles(List<UsuarioRol> roles) {
 		this.roles = roles;
 	}
 }

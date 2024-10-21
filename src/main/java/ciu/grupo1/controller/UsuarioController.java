@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import ciu.grupo1.dto.UsuarioDto;
 import ciu.grupo1.model.Usuario;
 import ciu.grupo1.request.AuthRequest;
 import ciu.grupo1.service.JwtService;
@@ -37,8 +38,9 @@ public class UsuarioController {
     }
 
     @PostMapping("/addNewUser")
-    public String addNewUser(@RequestBody Usuario usuarioDto) { //TODO: Modificar para UsuarioDto.
-        return usuarioService.addUser(usuarioDto);
+    public String addNewUser(@RequestBody UsuarioDto usuarioDto) {
+        Usuario usuario = usuarioDto.toModel(true);
+    	return usuarioService.addUser(usuario);
     }
 
     @GetMapping("/userProfile")
