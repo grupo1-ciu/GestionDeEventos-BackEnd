@@ -1,6 +1,10 @@
 package ciu.grupo1.model;
 
 
+import java.io.Serializable;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -12,18 +16,21 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table (name="usuarios_roles", schema="eventos")
-public class UsuarioRol {
+@JsonIgnoreProperties("usuario")
+public class UsuarioRol implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_usuario")
+	@JoinColumn(name = "usuario_id")
 	private Usuario usuario;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_rol")
+	@JoinColumn(name = "rol_id")
 	private Rol rol;
 
 	public Integer getId() {

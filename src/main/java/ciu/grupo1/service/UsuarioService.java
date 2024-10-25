@@ -2,14 +2,17 @@ package ciu.grupo1.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import ciu.grupo1.dto.UsuarioDto;
+import ciu.grupo1.dto.UsuarioLoginDto;
 import ciu.grupo1.model.Rol;
 import ciu.grupo1.model.TipoRol;
 import ciu.grupo1.model.Usuario;
@@ -35,15 +38,15 @@ public class UsuarioService implements UserDetailsService {
     private PasswordEncoder encoder;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<Usuario> userDetail = usuarioRepository.findByEmail(username); // Asumiendo que el 'email' es usado como nombre de usuario.
-
-        // Converting UserInfo to UserDetails
-        return userDetail.map(UserInfoDetails::new)
+    public UserInfoDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    	Optional <Usuario> usuarioDetalles = usuarioRepository.findWithUsuariosRolesRolByEmail(username); // Asumiendo que el 'email' es usado como nombre de usuario.
+//        Converting Usuario to UserDetails
+        return usuarioDetalles.map(UserInfoDetails::new)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
     }
 
-    public String addUser(Usuario usuario) {
+    public String addUser(UsuarioDto usuarioDto) {
+    	Usuario usuario = usuarioDto.toModel(true);
         // Encode password before saving the user
         usuario.setPassword(encoder.encode(usuario.getPassword()));
         Rol rol = this.rolRepository.findByNombre(TipoRol.ROLE_USER);
@@ -54,12 +57,37 @@ public class UsuarioService implements UserDetailsService {
         return "User Added Successfully";
     }
     
+    @Transactional(readOnly = true)
+    public Usuario getUsuarioWithRoles(String email) {
+    	return this.usuarioRepository.findWithUsuarioRolesByEmail(email);
+    }
+    
+    @Transactional(readOnly = true)
+    public UsuarioLoginDto getUsuarioLoginDtoWithRolesRol(String email) {
+    	UsuarioLoginDto usuarioLoginDto = new UsuarioLoginDto();
+    	Optional<Usuario> usuario = this.usuarioRepository.findWithUsuariosRolesRolByEmail(email);
+    	//Roles del usuario que encontré con el email recibido por parámetro.
+    	List<String> roles = (usuario.get().getUsuarioRoles().stream()
+    							.map(ur -> ur.getRol().getNombre().toString())
+    							.collect(Collectors.toList()));
+    	
+    	usuarioLoginDto.setNombre(usuario.get().getNombre());
+    	usuarioLoginDto.setApellido(usuario.get().getApellido());
+    	usuarioLoginDto.setRoles(roles);
+    	
+    	return usuarioLoginDto;
+    }
+    
+    public List<String> getRolesByUsuarioEmail(String email) {
+    	UsuarioLoginDto usuarioLoginDto = this.getUsuarioLoginDtoWithRolesRol(email);
+    	return usuarioLoginDto.getRoles();
+    }
+    
     private void crearYGuardarUsuarioRol(Rol rol, Usuario usuario) {
     	UsuarioRol usuarioRol = new UsuarioRol();
     	usuarioRol.setUsuario(usuario);
-    	System.out.println(usuarioRol.getUsuario().getId());
         usuarioRol.setRol(rol);
-        usuario.getRoles().add(usuarioRol);
+        usuario.getUsuarioRoles().add(usuarioRol);
         usuarioRolRepository.save(usuarioRol);
     }
 }

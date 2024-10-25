@@ -1,17 +1,40 @@
 package ciu.grupo1.model;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.NamedAttributeNode;
+import jakarta.persistence.NamedEntityGraph;
+import jakarta.persistence.NamedSubgraph;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "usuarios", schema = "eventos")
-public class Usuario {
+@NamedEntityGraph(name = "UsuarioWithUsuarioRoles",
+	attributeNodes = @NamedAttributeNode("usuarioRoles")
+)
+@NamedEntityGraph(name = "UsuarioWithUsuarioRolesRol",
+	attributeNodes = @NamedAttributeNode(value = "usuarioRoles", subgraph = "usuarioRoles-subgraph"),
+	subgraphs = {
+		@NamedSubgraph(
+			name = "usuarioRoles-subgraph",
+			attributeNodes = {
+				@NamedAttributeNode("rol")
+			}
+		)
+	}
+)
 
+@Table(name = "usuarios", schema = "eventos")
+public class Usuario implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 	@Id
 	private UUID id;
 	private String nombre;
@@ -19,11 +42,11 @@ public class Usuario {
 	private String email;
 	private String password;
 	
-	@OneToMany(mappedBy="usuario")
-	private List<UsuarioRol> roles;
+	@OneToMany(mappedBy = "usuario")
+	private Set<UsuarioRol> usuarioRoles;
 	
 	@OneToMany(mappedBy = "usuario")
-	private List<Inscripcion> inscripciones;
+	private Set<Inscripcion> inscripciones;
 	
 	public UUID getId() {
 		return id;
@@ -65,11 +88,11 @@ public class Usuario {
 		this.password = password;
 	}
 
-	public List<UsuarioRol> getRoles() {
-		return roles;
+	public Set<UsuarioRol> getUsuarioRoles() {
+		return usuarioRoles;
 	}
 
-	public void setRoles(List<UsuarioRol> roles) {
-		this.roles = roles;
+	public void setUsuarioRoles(Set<UsuarioRol> usuarioRoles) {
+		this.usuarioRoles = usuarioRoles;
 	}
 }

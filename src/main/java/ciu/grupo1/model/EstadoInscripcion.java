@@ -13,6 +13,7 @@ public class EstadoInscripcion {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
+	
 	private TipoEstadoInscripcion nombreEstadoInscripcion;
 
 	public int getId() {

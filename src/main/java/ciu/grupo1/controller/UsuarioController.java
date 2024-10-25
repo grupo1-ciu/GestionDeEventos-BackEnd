@@ -13,8 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ciu.grupo1.dto.UsuarioDto;
-import ciu.grupo1.model.Usuario;
+import ciu.grupo1.dto.UsuarioLoginDto;
 import ciu.grupo1.request.AuthRequest;
+import ciu.grupo1.security.UserInfoDetails;
 import ciu.grupo1.service.JwtService;
 import ciu.grupo1.service.UsuarioService;
 
@@ -37,10 +38,9 @@ public class UsuarioController {
         return "Welcome this endpoint is not secure";
     }
 
-    @PostMapping("/addNewUser")
+    @PostMapping("/usuarios")
     public String addNewUser(@RequestBody UsuarioDto usuarioDto) {
-        Usuario usuario = usuarioDto.toModel(true);
-    	return usuarioService.addUser(usuario);
+    	return usuarioService.addUser(usuarioDto);
     }
 
     @GetMapping("/userProfile")
@@ -57,17 +57,21 @@ public class UsuarioController {
     
 //    @PostMapping("/login")
 //    @PreAuthorize("hasAuthority('ROLE_USER')")
-//    public String login(@RequestBody UserInfo userInfo) {
-//    	return service.loadUserByUsername(userInfo.getEmail());
+//    public List<String> login(@RequestBody UsuarioLoginDto usuarioLoginDto) {
+//    	return null;
 //    }
 
     @PostMapping("/generateToken")
-    public String authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
+    public UsuarioLoginDto authenticateAndGetToken(@RequestBody AuthRequest authRequest) throws UsernameNotFoundException {
+    	UsuarioLoginDto usuarioLoginDto = this.usuarioService.getUsuarioLoginDtoWithRolesRol(authRequest.getUsername());
         Authentication authentication = authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword())
         );
+        
         if (authentication.isAuthenticated()) {
-            return jwtService.generateToken(authRequest.getUsername());
+        	String token = jwtService.generateToken(authRequest.getUsername());
+        	usuarioLoginDto.setToken(token);
+        	return usuarioLoginDto;
         } else {
             throw new UsernameNotFoundException("Invalid user request!");
         }

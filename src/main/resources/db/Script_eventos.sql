@@ -35,11 +35,11 @@ CREATE TABLE eventos.usuarios (
 
 CREATE TABLE eventos.usuarios_roles(
 	id INT NOT NULL AUTO_INCREMENT,
-	id_usuario UUID NOT NULL,
-	id_rol INT NOT NULL,
+	usuario_id UUID NOT NULL,
+	rol_id INT NOT NULL,
 	CONSTRAINT id_usuario_rol_pkey PRIMARY KEY (id),
-	CONSTRAINT usuariosroles_usuarios_fkey FOREIGN KEY (id_usuario) REFERENCES eventos.usuarios(id),
-	CONSTRAINT usuariosroles_roles_fkey FOREIGN KEY (id_rol) REFERENCES eventos.roles(id)
+	CONSTRAINT usuariosroles_usuarios_fkey FOREIGN KEY (usuario_id) REFERENCES eventos.usuarios(id),
+	CONSTRAINT usuariosroles_roles_fkey FOREIGN KEY (rol_id) REFERENCES eventos.roles(id)
 );
 
 CREATE TABLE eventos.salas(
@@ -54,7 +54,8 @@ CREATE TABLE eventos.eventos(
 	id UUID NOT NULL,
 	sala UUID NOT NULL,
 	fecha_evento DATE NOT NULL,
-	hora_inicio TIME NOT NULL,
+	hora_inicio DATETIME NOT NULL,
+	hora_fin DATETIME NOT NULL,
 	estado INT NOT NULL,
 	tipo INT NOT NULL,
 	CONSTRAINT id_evento_pkey PRIMARY KEY (id),
@@ -96,11 +97,10 @@ INSERT INTO eventos.estados_inscripciones (nombre) VALUES
 INSERT INTO eventos.usuarios (id, nombre, apellido, email, password) VALUES
 	(uuid(),'root', 'root', 'root@root', 'root');
 	
-INSERT INTO eventos.usuarios_roles (id_usuario, id_rol) VALUES
+INSERT INTO eventos.usuarios_roles (usuario_id , rol_id) VALUES
 	((SELECT id FROM eventos.usuarios WHERE email = 'root@root'),
 	(SELECT id FROM eventos.roles WHERE nombre = 'ROLE_USER')),
 	((SELECT id FROM eventos.usuarios WHERE email = 'root@root'),
 	(SELECT id FROM eventos.roles WHERE nombre = 'ROLE_ADMIN')),
 	((SELECT id FROM eventos.usuarios WHERE email = 'root@root'),
 	(SELECT id FROM eventos.roles WHERE nombre = 'ROLE_OPERATOR'));
-	

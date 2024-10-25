@@ -1,15 +1,10 @@
 package ciu.grupo1.dto;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-import ciu.grupo1.model.Rol;
-import ciu.grupo1.model.TipoRol;
 import ciu.grupo1.model.Usuario;
 import ciu.grupo1.model.UsuarioRol;
-import ciu.grupo1.service.RolService;
 
 public class UsuarioDto {
 	
@@ -28,7 +23,7 @@ public class UsuarioDto {
 		
 		if(esNuevo) {
 			usuario.setId(UUID.randomUUID());
-			usuario.setRoles(new ArrayList<UsuarioRol>());
+			usuario.setUsuarioRoles(new HashSet<UsuarioRol>());
 		}
 		
 		return usuario;
