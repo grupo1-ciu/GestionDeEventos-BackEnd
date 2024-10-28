@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ciu.grupo1.dto.UsuarioDto;
 import ciu.grupo1.dto.UsuarioLoginDto;
+import ciu.grupo1.dto.UsuarioRegistroDto;
 import ciu.grupo1.request.AuthRequest;
 import ciu.grupo1.security.UserInfoDetails;
 import ciu.grupo1.service.JwtService;
@@ -33,13 +34,9 @@ public class UsuarioController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    @GetMapping("/welcome")
-    public String welcome() {
-        return "Welcome this endpoint is not secure";
-    }
 
     @PostMapping("/usuarios")
-    public String addNewUser(@RequestBody UsuarioDto usuarioDto) {
+    public String addNewUser(@RequestBody UsuarioRegistroDto usuarioDto) {
     	return usuarioService.addUser(usuarioDto);
     }
 

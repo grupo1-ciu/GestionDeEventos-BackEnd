@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ciu.grupo1.dto.UsuarioDto;
 import ciu.grupo1.dto.UsuarioLoginDto;
+import ciu.grupo1.dto.UsuarioRegistroDto;
 import ciu.grupo1.model.Rol;
 import ciu.grupo1.model.TipoRol;
 import ciu.grupo1.model.Usuario;
@@ -45,7 +46,7 @@ public class UsuarioService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
     }
 
-    public String addUser(UsuarioDto usuarioDto) {
+    public String addUser(UsuarioRegistroDto usuarioDto) {
     	Usuario usuario = usuarioDto.toModel(true);
         // Encode password before saving the user
         usuario.setPassword(encoder.encode(usuario.getPassword()));
@@ -54,7 +55,7 @@ public class UsuarioService implements UserDetailsService {
         usuarioRepository.save(usuario);
         this.crearYGuardarUsuarioRol(rol, usuario);
         
-        return "User Added Successfully";
+        return "El usuario fue creado!";
     }
     
     @Transactional(readOnly = true)
