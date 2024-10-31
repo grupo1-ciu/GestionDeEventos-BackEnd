@@ -1,8 +1,9 @@
 package ciu.grupo1.model;
 
 public enum TipoEstadoInscripcion {
-	ACTIVA,
+	PENDIENTE,
 	ACEPTADA,
 	RECHAZADA,
-	CANCELADA
+	CANCELADA,
+	CONCRETADA
 }

@@ -5,5 +5,6 @@ public enum FaseEvento {
 	CANCELADO,
 	POSPUESTO,
 	EN_CURSO,
+	DISPONIBLE,
 	FINALIZADO
 }
