@@ -1,6 +1,8 @@
 package ciu.grupo1.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -13,6 +15,7 @@ public class TipoEvento {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
+	@Enumerated(EnumType.STRING)
 	private CategoriaEvento nombre;
 
 	public Integer getId() {
