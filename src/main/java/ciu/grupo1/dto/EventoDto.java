@@ -1,42 +1,30 @@
-package ciu.grupo1.model;
+package ciu.grupo1.dto;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.UUID;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import ciu.grupo1.model.EstadoEvento;
+import ciu.grupo1.model.Evento;
 
-@Entity
-@Table(name = "eventos", schema="eventos")
-public class Evento {
+public class EventoDto {
 	
-	@Id
-	private UUID id;
 	private LocalDate fechaEvento;
 	private LocalTime horaInicio;
 	private String descripcion;
 	private String sala;
 	private Integer capacidad;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="estado")
-	private EstadoEvento estado;
-
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="tipo")
-	private TipoEvento tipo;
-
-	public UUID getId() {
-		return id;
-	}
-
-	public void setId(UUID id) {
-		this.id = id;
+	public Evento toModel() {
+		Evento evento = new Evento();
+		
+		evento.setFechaEvento(fechaEvento);
+		evento.setHoraInicio(horaInicio);
+		evento.setDescripcion(descripcion);
+		evento.setSala(sala);
+		evento.setCapacidad(capacidad);
+		
+		return evento;
 	}
 
 	public LocalDate getFechaEvento() {
@@ -78,23 +66,5 @@ public class Evento {
 	public void setCapacidad(Integer capacidad) {
 		this.capacidad = capacidad;
 	}
-
-	public EstadoEvento getEstado() {
-		return estado;
-	}
-
-	public void setEstado(EstadoEvento estado) {
-		this.estado = estado;
-	}
-
-	public TipoEvento getTipo() {
-		return tipo;
-	}
-
-	public void setTipo(TipoEvento tipo) {
-		this.tipo = tipo;
-	}
-
-	
 	
 }

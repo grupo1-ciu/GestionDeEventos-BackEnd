@@ -12,11 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import ciu.grupo1.dto.UsuarioDto;
 import ciu.grupo1.dto.UsuarioLoginDto;
 import ciu.grupo1.dto.UsuarioRegistroDto;
 import ciu.grupo1.request.AuthRequest;
-import ciu.grupo1.security.UserInfoDetails;
 import ciu.grupo1.service.JwtService;
 import ciu.grupo1.service.UsuarioService;
 

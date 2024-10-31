@@ -20,5 +20,4 @@ public interface UsuarioRepository extends JpaRepository<Usuario, UUID> {
 	@EntityGraph(value = "UsuarioWithUsuarioRolesRol")
 	public Optional<Usuario> findWithUsuariosRolesRolByEmail(String email);
 	
-	
 }
