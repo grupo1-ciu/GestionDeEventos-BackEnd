@@ -5,29 +5,35 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
-@Table(name="estados_eventos", schema="eventos")
+@Table(name = "estados_eventos", schema = "eventos")
 public class EstadoEvento {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	
-	private FaseEvento nombreEstadoEvento;
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-	public Integer getId() {
-		return id;
-	}
+    private String nombre;
+    public int getId() {
+        return id;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public FaseEvento getNombreEstadoEvento() {
-		return nombreEstadoEvento;
-	}
+    public String getNombre() {
+        return nombre;
+    }
 
-	public void setNombreEstadoEvento(FaseEvento nombreEstadoEvento) {
-		this.nombreEstadoEvento = nombreEstadoEvento;
-	}
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
 }
+

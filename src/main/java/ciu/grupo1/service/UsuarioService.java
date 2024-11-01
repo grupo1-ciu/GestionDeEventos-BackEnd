@@ -2,6 +2,7 @@ package ciu.grupo1.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,6 +83,12 @@ public class UsuarioService implements UserDetailsService {
     public List<String> getRolesByUsuarioEmail(String email) {
     	UsuarioLoginDto usuarioLoginDto = this.getUsuarioLoginDtoWithRolesRol(email);
     	return usuarioLoginDto.getRoles();
+    }
+    
+
+    public Usuario obtenerUsuarioPorId(UUID idUsuario) {
+        return usuarioRepository.findById(idUsuario)
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado con el ID: " + idUsuario));
     }
     
     private void crearYGuardarUsuarioRol(Rol rol, Usuario usuario) {
