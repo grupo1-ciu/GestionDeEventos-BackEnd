@@ -4,6 +4,9 @@ import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import ciu.grupo1.model.Usuario;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -14,6 +17,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "inscripciones")
+@JsonIgnoreProperties("usuario")
 public class Inscripcion {
     
     @Id

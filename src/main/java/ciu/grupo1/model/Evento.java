@@ -1,5 +1,6 @@
 package ciu.grupo1.model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.HashSet;
@@ -16,12 +17,17 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "eventos", schema="eventos")
-public class Evento {
+public class Evento implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
 	
 	@Id
 	private UUID id;
 	private LocalDate fechaEvento;
 	private LocalTime horaInicio;
+	private String descripcion;
+	private String sala;
+	private Integer capacidad;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="estado")
@@ -29,10 +35,6 @@ public class Evento {
 	
 	@OneToMany(mappedBy = "evento")
 	private HashSet<Inscripcion> inscripciones;
-	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="sala")
-	private Sala sala;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="tipo")
@@ -70,20 +72,32 @@ public class Evento {
 		this.estado = estado;
 	}
 
-	public Sala getSala() {
-		return sala;
-	}
-
-	public void setSala(Sala sala) {
-		this.sala = sala;
-	}
-
 	public TipoEvento getTipo() {
 		return tipo;
 	}
 
 	public void setTipo(TipoEvento tipo) {
 		this.tipo = tipo;
+	}
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
+	public Integer getCapacidad() {
+		return capacidad;
+	}
+
+	public void setCapacidad(Integer capacidad) {
+		this.capacidad = capacidad;
+	}
+
+	public void setSala(String sala) {
+		this.sala = sala;
 	}
 	
 }

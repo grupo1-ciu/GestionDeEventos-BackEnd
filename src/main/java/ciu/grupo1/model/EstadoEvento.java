@@ -1,6 +1,8 @@
 package ciu.grupo1.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -14,10 +16,13 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "estados_eventos", schema = "eventos")
 public class EstadoEvento {
-    
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
+	
+	@Enumerated(EnumType.STRING)
+	private FaseEvento nombre;
 
     private String nombre;
     public int getId() {
@@ -28,12 +33,12 @@ public class EstadoEvento {
         this.id = id;
     }
 
-    public String getNombre() {
-        return nombre;
-    }
+	public FaseEvento getNombreEstadoEvento() {
+		return nombre;
+	}
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
+	public void setNombreEstadoEvento(FaseEvento nombreEstadoEvento) {
+		this.nombre = nombreEstadoEvento;
+	}
 }
 
