@@ -9,6 +9,7 @@ import ciu.grupo1.model.Inscripcion;
 import ciu.grupo1.repository.EventoRepository;
 import ciu.grupo1.repository.InscripcionRepository;
 import ciu.grupo1.repository.UsuarioRepository;
+import jakarta.transaction.Transactional;
 
 @Service
 public class InscripcionService {
@@ -33,9 +34,13 @@ public class InscripcionService {
 	        return inscripcionRepository.countByEventoId(idEvento);
 	    }
 
-	    
+	    @Transactional
 	    public void guardarInscripcion(Inscripcion inscripcion) {
 	        inscripcionRepository.save(inscripcion);
 	    }
+	    
+
+
+		
 }
 

@@ -1,5 +1,7 @@
 package ciu.grupo1.model;
 
+import java.util.UUID;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -13,16 +15,16 @@ import jakarta.persistence.Table;
 public class EstadoInscripcion {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private UUID id;
 	
 	@Enumerated(EnumType.STRING)
 	private TipoEstadoInscripcion nombreEstadoInscripcion;
 
-	public int getId() {
+	public UUID getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(UUID id) {
 		this.id = id;
 	}
 

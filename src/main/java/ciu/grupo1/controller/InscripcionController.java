@@ -13,14 +13,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ciu.grupo1.model.EstadoInscripcion;
 import ciu.grupo1.model.Evento;
+import ciu.grupo1.model.FaseEvento;
 import ciu.grupo1.model.Inscripcion;
+import ciu.grupo1.model.TipoEstadoInscripcion;
 import ciu.grupo1.model.Usuario;
+import ciu.grupo1.repository.EstadoInscripcionRepository;
 import ciu.grupo1.service.EventoService;
 import ciu.grupo1.service.InscripcionService;
 import ciu.grupo1.service.UsuarioService;
-
 @RestController
-@RequestMapping("/api/inscripciones")
+@RequestMapping("/inscripciones")
 public class InscripcionController {
 
     @Autowired
@@ -28,9 +30,9 @@ public class InscripcionController {
 
     @Autowired
     private EventoService eventoService;
-    
+
     @Autowired
-    private EstadoInscripcion estadoInscripcion;
+    private EstadoInscripcionRepository estadoInscripcionRepository;
 
     @Autowired
     private UsuarioService usuarioService;
@@ -48,22 +50,26 @@ public class InscripcionController {
         }
 
         Evento evento = eventoService.obtenerEventoPorId(idEvento);
-        int cuposDisponibles = evento.getSala().getCapacidad() - inscripcionService.contarInscripciones(idEvento);
+        int cuposDisponibles = evento.getCapacidad() - inscripcionService.contarInscripciones(idEvento);
         if (cuposDisponibles <= 0) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No hay cupos disponibles para el evento");
         }
 
-        if (!evento.getEstado().getNombre().equalsIgnoreCase("disponible")) {
+        if (!evento.getEstado().getNombreEstadoEvento().equals(FaseEvento.DISPONIBLE)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El evento no está abierto para inscripciones");
         }
+
+        EstadoInscripcion estadoInscripcion = estadoInscripcionRepository.findByNombre(TipoEstadoInscripcion.PENDIENTE.toString())
+                .orElseThrow(() -> new RuntimeException("Estado de inscripción no encontrado"));
 
         Inscripcion inscripcion = new Inscripcion();
         inscripcion.setUsuario(usuario);
         inscripcion.setEvento(evento);
-        inscripcion.setEstadoInscripcion(estadoInscripcion.getNombreEstadoInscripcion());
+        inscripcion.setEstadoInscripcion(estadoInscripcion);
 
         inscripcionService.guardarInscripcion(inscripcion);
 
         return ResponseEntity.ok("Inscripción realizada con éxito");
     }
 }
+

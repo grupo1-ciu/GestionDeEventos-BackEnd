@@ -7,11 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+
 
 @Entity
 @Table(name = "estados_eventos", schema = "eventos")
@@ -24,7 +20,7 @@ public class EstadoEvento {
 	@Enumerated(EnumType.STRING)
 	private FaseEvento nombre;
 
-    private String nombre;
+   
     public int getId() {
         return id;
     }

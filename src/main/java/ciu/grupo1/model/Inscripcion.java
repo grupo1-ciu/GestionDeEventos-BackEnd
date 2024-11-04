@@ -1,13 +1,7 @@
 package ciu.grupo1.model;
 
 import java.util.UUID;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import ciu.grupo1.model.Usuario;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
@@ -33,7 +27,7 @@ public class Inscripcion {
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_estado_inscripcion", nullable = false)
-    private TipoEstadoInscripcion estadoInscripcion;
+    private EstadoInscripcion estadoInscripcion;
     
   
     public UUID getId() {
@@ -44,27 +38,43 @@ public class Inscripcion {
         this.id = id;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
-    }
+	public UUID getIdUsuario() {
+		return this.usuario.getId();
+	}
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
 
-    public Evento getEvento() {
-        return evento;
-    }
+	public UUID getIdEvento() {
+		return this.evento.getId();
+	}
 
-    public void setEvento(Evento evento) {
-        this.evento = evento;
-    }
+	public UUID getIdEstadoInscripcion() {
+		return this.estadoInscripcion.getId();
+	}
 
-    public TipoEstadoInscripcion getEstadoInscripcion() {
-        return estadoInscripcion;
-    }
+	public Usuario getUsuario() {
+		return usuario;
+	}
 
-    public void setEstadoInscripcion(TipoEstadoInscripcion estado) {
-        this.estadoInscripcion = estado;
-    }
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+
+	public Evento getEvento() {
+		return evento;
+	}
+
+	public void setEvento(Evento evento) {
+		this.evento = evento;
+	}
+
+	public EstadoInscripcion getEstadoInscripcion() {
+		return estadoInscripcion;
+	}
+
+	public void setEstadoInscripcion(EstadoInscripcion estadoInscripcion) {
+		this.estadoInscripcion = estadoInscripcion;
+	}
+
+
+
 }

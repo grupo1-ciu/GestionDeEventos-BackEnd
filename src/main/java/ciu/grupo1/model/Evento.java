@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 import jakarta.persistence.Entity;
@@ -33,8 +32,8 @@ public class Evento implements Serializable{
 	@JoinColumn(name="estado")
 	private EstadoEvento estado;
 	
-	@OneToMany(mappedBy = "evento")
-	private HashSet<Inscripcion> inscripciones;
+	//@OneToMany(mappedBy = "evento")
+	//private HashSet<Inscripcion> inscripciones;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="tipo")
@@ -96,6 +95,9 @@ public class Evento implements Serializable{
 		this.capacidad = capacidad;
 	}
 
+	public String getSala() {
+		return sala;
+	}
 	public void setSala(String sala) {
 		this.sala = sala;
 	}
