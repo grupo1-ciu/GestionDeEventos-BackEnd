@@ -11,7 +11,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import ciu.grupo1.dto.UsuarioDto;
 import ciu.grupo1.dto.UsuarioLoginDto;
 import ciu.grupo1.dto.UsuarioRegistroDto;
 import ciu.grupo1.model.Rol;

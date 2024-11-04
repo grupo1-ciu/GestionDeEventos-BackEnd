@@ -1,5 +1,6 @@
 package ciu.grupo1.repository;
 
+
 import java.util.List;
 import java.util.UUID;
 
@@ -12,4 +13,5 @@ import ciu.grupo1.model.Evento;
 public interface EventoRepository extends JpaRepository<Evento, UUID>{
 	
 	public List<Evento> findAll();
+
 }

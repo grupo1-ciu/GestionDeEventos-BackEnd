@@ -27,5 +27,4 @@ public interface UsuarioRepository extends JpaRepository<Usuario, UUID> {
 	
 	public Usuario findUsuarioByEmail(String email);
 	
-	
 }
