@@ -44,6 +44,10 @@ public class UsuarioService implements UserDetailsService {
         return usuarioDetalles.map(UserInfoDetails::new)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
     }
+    
+    public List<Usuario> getUsuarios(){
+    	return this.usuarioRepository.findAll();
+    }
 
     public String addUser(UsuarioRegistroDto usuarioDto) {
     	Usuario usuario = usuarioDto.toModel(true);
@@ -60,6 +64,11 @@ public class UsuarioService implements UserDetailsService {
     @Transactional(readOnly = true)
     public Usuario getUsuarioWithRoles(String email) {
     	return this.usuarioRepository.findWithUsuarioRolesByEmail(email);
+    }
+    
+    @Transactional(readOnly = true)
+    public Usuario getUsuarioWithInscripciones(String email) {
+    	return this.usuarioRepository.findWithInscripcionesByEmail(email);
     }
     
     @Transactional(readOnly = true)

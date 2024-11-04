@@ -29,10 +29,10 @@ public class EstadoEvento {
 	}
 
 	public FaseEvento getNombreEstadoEvento() {
-		return nombreEstadoEvento;
+		return nombre;
 	}
 
 	public void setNombreEstadoEvento(FaseEvento nombreEstadoEvento) {
-		this.nombreEstadoEvento = nombreEstadoEvento;
+		this.nombre = nombreEstadoEvento;
 	}
 }

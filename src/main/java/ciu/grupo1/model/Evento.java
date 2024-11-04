@@ -1,5 +1,6 @@
 package ciu.grupo1.model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.UUID;
@@ -13,7 +14,9 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "eventos", schema="eventos")
-public class Evento {
+public class Evento implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
 	
 	@Id
 	private UUID id;
@@ -62,7 +65,7 @@ public class Evento {
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
-
+  
 	public String getSala() {
 		return sala;
 	}
@@ -86,15 +89,5 @@ public class Evento {
 	public void setEstado(EstadoEvento estado) {
 		this.estado = estado;
 	}
-
-	public TipoEvento getTipo() {
-		return tipo;
-	}
-
-	public void setTipo(TipoEvento tipo) {
-		this.tipo = tipo;
-	}
-
-	
 	
 }

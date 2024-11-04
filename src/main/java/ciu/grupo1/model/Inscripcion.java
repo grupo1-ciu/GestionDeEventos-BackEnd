@@ -2,6 +2,10 @@ package ciu.grupo1.model;
 
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import ciu.grupo1.model.Usuario;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
@@ -11,6 +15,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "inscripciones")
+@JsonIgnoreProperties("usuario")
 public class Inscripcion {
 	
 	@Id
@@ -26,7 +31,7 @@ public class Inscripcion {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_estado_inscripcion")
-	private EstadoInscripcion estadoIncripcion;
+	private EstadoInscripcion estadoInscripcion;
 
 	public UUID getId() {
 		return id;
@@ -43,4 +48,22 @@ public class Inscripcion {
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
+
+	public Evento getEvento() {
+		return evento;
+	}
+
+	public void setEvento(Evento evento) {
+		this.evento = evento;
+	}
+
+	public EstadoInscripcion getEstadoInscripcion() {
+		return estadoInscripcion;
+	}
+
+	public void setEstadoInscripcion(EstadoInscripcion estadoInscripcion) {
+		this.estadoInscripcion = estadoInscripcion;
+	}
+	
+	
 }
