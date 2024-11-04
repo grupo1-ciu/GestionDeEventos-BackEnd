@@ -1,6 +1,7 @@
 package ciu.grupo1.controller;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +39,13 @@ public class UsuarioController {
 	@GetMapping("/{email}")
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	public UsuarioAdminDto findByEmail(@PathVariable String email) {
-		Usuario usuario = this.usuarioService.getUsuarioWithInscripciones(email);
-		UsuarioAdminDto usuarioDto = new UsuarioAdminDto(usuario);
-		return usuarioDto;
+		Optional<Usuario> usuario = this.usuarioService.getByEmail(email);
+		
+		if(usuario.isPresent()) {
+			Usuario user = usuario.get();
+			return new UsuarioAdminDto(user);
+		} else {
+			return null;
+		}
 	}
 }
