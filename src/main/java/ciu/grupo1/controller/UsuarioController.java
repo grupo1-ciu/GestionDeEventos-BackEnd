@@ -15,6 +15,8 @@ import ciu.grupo1.dto.UsuarioRegistroDto;
 import ciu.grupo1.request.AuthRequest;
 import ciu.grupo1.service.JwtService;
 import ciu.grupo1.service.UsuarioService;
+import ciu.grupo1.dto.UsuarioAdminDto;
+import ciu.grupo1.model.Usuario;
 
 @RestController
 @RequestMapping("/usuarios")

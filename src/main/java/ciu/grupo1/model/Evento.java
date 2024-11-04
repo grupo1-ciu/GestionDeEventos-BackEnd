@@ -89,5 +89,13 @@ public class Evento implements Serializable{
 	public void setEstado(EstadoEvento estado) {
 		this.estado = estado;
 	}
+
+	public TipoEvento getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(TipoEvento tipo) {
+		this.tipo = tipo;
+	}
 	
 }
