@@ -1,7 +1,6 @@
 package ciu.grupo1.model;
 
 import java.util.UUID;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -13,26 +12,28 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "estados_inscripciones", schema="eventos")
 public class EstadoInscripcion {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private UUID id;
-	
-	@Enumerated(EnumType.STRING)
-	private TipoEstadoInscripcion nombreEstadoInscripcion;
 
-	public UUID getId() {
-		return id;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO) // Generación automática de UUID
+    private UUID id;
 
-	public void setId(UUID id) {
-		this.id = id;
-	}
+    @Enumerated(EnumType.STRING)
+    private TipoEstadoInscripcion nombreEstadoInscripcion; // Enum para el estado de inscripción
 
-	public TipoEstadoInscripcion getNombreEstadoInscripcion() {
-		return nombreEstadoInscripcion;
-	}
+    // Getters y Setters
+    public UUID getId() {
+        return id;
+    }
 
-	public void setNombreEstadoInscripcion(TipoEstadoInscripcion nombreEstadoInscripcion) {
-		this.nombreEstadoInscripcion = nombreEstadoInscripcion;
-	}
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public TipoEstadoInscripcion getNombreEstadoInscripcion() {
+        return nombreEstadoInscripcion;
+    }
+
+    public void setNombreEstadoInscripcion(TipoEstadoInscripcion nombreEstadoInscripcion) {
+        this.nombreEstadoInscripcion = nombreEstadoInscripcion;
+    }
 }

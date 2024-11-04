@@ -1,16 +1,5 @@
 package ciu.grupo1.controller;
 
-import java.util.UUID;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
 import ciu.grupo1.model.EstadoInscripcion;
 import ciu.grupo1.model.Evento;
 import ciu.grupo1.model.FaseEvento;
@@ -21,6 +10,17 @@ import ciu.grupo1.repository.EstadoInscripcionRepository;
 import ciu.grupo1.service.EventoService;
 import ciu.grupo1.service.InscripcionService;
 import ciu.grupo1.service.UsuarioService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/inscripciones")
 public class InscripcionController {
@@ -59,8 +59,9 @@ public class InscripcionController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El evento no está abierto para inscripciones");
         }
 
-        EstadoInscripcion estadoInscripcion = estadoInscripcionRepository.findByNombre(TipoEstadoInscripcion.PENDIENTE.toString())
-                .orElseThrow(() -> new RuntimeException("Estado de inscripción no encontrado"));
+        EstadoInscripcion estadoInscripcion = estadoInscripcionRepository
+            .findByNombreEstadoInscripcion(TipoEstadoInscripcion.PENDIENTE)
+            .orElseThrow(() -> new RuntimeException("Estado de inscripción no encontrado"));
 
         Inscripcion inscripcion = new Inscripcion();
         inscripcion.setUsuario(usuario);
@@ -72,4 +73,3 @@ public class InscripcionController {
         return ResponseEntity.ok("Inscripción realizada con éxito");
     }
 }
-
