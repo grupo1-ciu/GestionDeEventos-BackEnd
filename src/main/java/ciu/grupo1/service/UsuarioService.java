@@ -39,7 +39,7 @@ public class UsuarioService implements UserDetailsService {
     @Override
     public UserInfoDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     	Optional <Usuario> usuarioDetalles = usuarioRepository.findWithUsuariosRolesRolByEmail(username); // Asumiendo que el 'email' es usado como nombre de usuario.
-//        Converting Usuario to UserDetails
+
         return usuarioDetalles.map(UserInfoDetails::new)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
     }
@@ -50,7 +50,7 @@ public class UsuarioService implements UserDetailsService {
 
     public String addUser(UsuarioRegistroDto usuarioDto) {
     	Usuario usuario = usuarioDto.toModel(true);
-        // Encode password before saving the user
+
         usuario.setPassword(encoder.encode(usuario.getPassword()));
         Rol rol = this.rolRepository.findByNombre(TipoRol.ROLE_USER);
         System.out.println(usuario.getId());
@@ -74,7 +74,7 @@ public class UsuarioService implements UserDetailsService {
     public UsuarioLoginDto getUsuarioLoginDtoWithRolesRol(String email) {
     	UsuarioLoginDto usuarioLoginDto = new UsuarioLoginDto();
     	Optional<Usuario> usuario = this.usuarioRepository.findWithUsuariosRolesRolByEmail(email);
-    	//Roles del usuario que encontré con el email recibido por parámetro.
+    
     	List<String> roles = (usuario.get().getUsuarioRoles().stream()
     							.map(ur -> ur.getRol().getNombre().toString())
     							.collect(Collectors.toList()));

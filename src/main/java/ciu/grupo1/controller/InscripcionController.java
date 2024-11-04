@@ -39,15 +39,18 @@ public class InscripcionController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('ROLE_USER')")
-    public ResponseEntity<String> inscribirUsuario(@RequestParam UUID idEvento, @RequestParam UUID idUsuario) {
-        Usuario usuario = usuarioService.obtenerUsuarioPorId(idUsuario);
+    public ResponseEntity<String> inscribirUsuario(@RequestParam UUID idEvento, @RequestParam String emailUsuario) {
+       
+    	Usuario usuario = usuarioService.getUsuarioWithRoles(emailUsuario);
         if (usuario == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");
         }
 
+
         if (inscripcionService.estaInscrito(usuario.getId(), idEvento)) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("El usuario ya está inscrito en el evento");
         }
+
 
         Evento evento = eventoService.obtenerEventoPorId(idEvento);
         int cuposDisponibles = evento.getCapacidad() - inscripcionService.contarInscripciones(idEvento);
@@ -55,14 +58,17 @@ public class InscripcionController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No hay cupos disponibles para el evento");
         }
 
+  
         if (!evento.getEstado().getNombreEstadoEvento().equals(FaseEvento.DISPONIBLE)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El evento no está abierto para inscripciones");
         }
 
+     
         EstadoInscripcion estadoInscripcion = estadoInscripcionRepository
             .findByNombreEstadoInscripcion(TipoEstadoInscripcion.PENDIENTE)
             .orElseThrow(() -> new RuntimeException("Estado de inscripción no encontrado"));
 
+        
         Inscripcion inscripcion = new Inscripcion();
         inscripcion.setUsuario(usuario);
         inscripcion.setEvento(evento);
@@ -72,4 +78,5 @@ public class InscripcionController {
 
         return ResponseEntity.ok("Inscripción realizada con éxito");
     }
+
 }
