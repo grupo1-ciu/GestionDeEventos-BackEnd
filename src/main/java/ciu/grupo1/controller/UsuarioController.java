@@ -10,9 +10,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import ciu.grupo1.dto.UsuarioLoginDto;
+import ciu.grupo1.dto.UsuarioRegistroDto;
+import ciu.grupo1.request.AuthRequest;
+import ciu.grupo1.service.JwtService;
+import ciu.grupo1.service.UsuarioService;
 import ciu.grupo1.dto.UsuarioAdminDto;
 import ciu.grupo1.model.Usuario;
-import ciu.grupo1.service.UsuarioService;
 
 @RestController
 @RequestMapping("/usuarios")

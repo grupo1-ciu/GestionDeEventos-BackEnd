@@ -29,7 +29,7 @@ public class Evento implements Serializable{
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="estado")
 	private EstadoEvento estado;
-	
+
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="tipo")
 	private TipoEvento tipo;
@@ -58,6 +58,30 @@ public class Evento implements Serializable{
 		this.horaInicio = horaInicio;
 	}
 
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+  
+	public String getSala() {
+		return sala;
+	}
+
+	public void setSala(String sala) {
+		this.sala = sala;
+	}
+
+	public Integer getCapacidad() {
+		return capacidad;
+	}
+
+	public void setCapacidad(Integer capacidad) {
+		this.capacidad = capacidad;
+	}
+
 	public EstadoEvento getEstado() {
 		return estado;
 	}
@@ -72,26 +96,6 @@ public class Evento implements Serializable{
 
 	public void setTipo(TipoEvento tipo) {
 		this.tipo = tipo;
-	}
-
-	public String getDescripcion() {
-		return descripcion;
-	}
-
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
-	}
-
-	public Integer getCapacidad() {
-		return capacidad;
-	}
-
-	public void setCapacidad(Integer capacidad) {
-		this.capacidad = capacidad;
-	}
-
-	public void setSala(String sala) {
-		this.sala = sala;
 	}
 	
 }
