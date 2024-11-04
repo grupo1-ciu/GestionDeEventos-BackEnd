@@ -14,6 +14,7 @@ public class EventoDto {
 	private String descripcion;
 	private String sala;
 	private Integer capacidad;
+	private String tipoEvento;
 	
 	public Evento toModel() {
 		Evento evento = new Evento();
@@ -66,5 +67,15 @@ public class EventoDto {
 	public void setCapacidad(Integer capacidad) {
 		this.capacidad = capacidad;
 	}
+
+	public String getTipoEvento() {
+		return tipoEvento;
+	}
+
+	public void setTipoEvento(String tipoEvento) {
+		this.tipoEvento = tipoEvento;
+	}
+	
+	
 	
 }

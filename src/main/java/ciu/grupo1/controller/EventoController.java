@@ -23,7 +23,6 @@ import ciu.grupo1.service.EventoService;
 
 @RestController
 @RequestMapping("/eventos")
-@CrossOrigin(origins = "http://localhost:5173")
 public class EventoController {
 	
 	@Autowired
@@ -38,7 +37,7 @@ public class EventoController {
 		return eventosDto;
 	}
 
-	@PostMapping("/crearEvento")
+	@PostMapping()
 	public EventoDto addNewEvent(@RequestBody EventoDto eventoDto) {
 		Evento evento = eventoService.addEvent(eventoDto);
 		EventoDto eventoDto1 = new EventoDto();

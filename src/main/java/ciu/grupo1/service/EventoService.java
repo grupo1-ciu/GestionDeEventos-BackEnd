@@ -25,9 +25,6 @@ import ciu.grupo1.repository.TipoEventoRepository;
 
 @Service
 public class EventoService {
-	
-	public List<Evento> getAllEventos(){
-		return this.eventoRepository.findAll();
     
   @Autowired
 	private EstadoEventoRepository estadoEventoRepository;
@@ -38,17 +35,21 @@ public class EventoService {
 	@Autowired
 	private TipoEventoRepository tipoEventoRepository;
 	
+	public List<Evento> getAllEventos(){
+		return this.eventoRepository.findAll();
+	}
+	
 	@Transactional
 	public Evento addEvent(EventoDto eventoDto) {
 		Evento evento = eventoDto.toModel();
 		EstadoEvento ee = estadoEventoRepository.findByNombreEstadoEvento(FaseEvento.DISPONIBLE);
-		TipoEvento te = tipoEventoRepository.findByNombre(CategoriaEvento.CONCIERTO);
+		TipoEvento te = tipoEventoRepository.findByNombre(CategoriaEvento.valueOf(eventoDto.getTipoEvento().toUpperCase()));
 		evento.setId(UUID.randomUUID());
-		evento.setFechaEvento(LocalDate.now());
-		evento.setHoraInicio(LocalTime.now());
-		evento.setDescripcion("concierto");
-		evento.setCapacidad(200);
-		evento.setSala("la que venga");
+		evento.setFechaEvento(eventoDto.getFechaEvento());
+		evento.setHoraInicio(eventoDto.getHoraInicio());
+		evento.setDescripcion(eventoDto.getDescripcion());
+		evento.setCapacidad(eventoDto.getCapacidad());
+		evento.setSala(eventoDto.getSala());
 		evento.setTipo(te);
 		evento.setEstado(ee);
 		eventoRepository.save(evento);
