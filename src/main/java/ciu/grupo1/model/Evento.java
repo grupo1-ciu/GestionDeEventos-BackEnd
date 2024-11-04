@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.UUID;
 
+import ciu.grupo1.dto.EventoDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
@@ -33,6 +34,17 @@ public class Evento implements Serializable{
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="tipo")
 	private TipoEvento tipo;
+	
+	public EventoDto toDto() {
+		EventoDto eventoDto = new EventoDto();
+		eventoDto.setCapacidad(capacidad);
+		eventoDto.setDescripcion(descripcion);
+		eventoDto.setFechaEvento(fechaEvento);
+		eventoDto.setHoraInicio(horaInicio);
+		eventoDto.setSala(sala);
+		
+		return eventoDto;
+	}
 
 	public UUID getId() {
 		return id;
