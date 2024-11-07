@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.UUID;
 
+import org.hibernate.annotations.JdbcTypeCode;
+
 import ciu.grupo1.dto.EventoDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -20,6 +22,7 @@ public class Evento implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@Id
+	@JdbcTypeCode(org.hibernate.type.SqlTypes.VARCHAR)
 	private UUID id;
 	private LocalDate fechaEvento;
 	private LocalTime horaInicio;
