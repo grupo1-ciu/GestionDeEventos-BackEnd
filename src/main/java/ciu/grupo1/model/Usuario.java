@@ -25,20 +25,6 @@ import jakarta.persistence.Table;
 		)
 	}
 )
-@NamedEntityGraph( name="UsuarioWithInscripcionesAndUsuarioRol",
-		attributeNodes = {
-			@NamedAttributeNode(value= "inscripciones", subgraph = "inscripciones-subgraph"),
-			@NamedAttributeNode(value= "usuarioRoles", subgraph = "usuarioRoles-subgraph")
-		},
-		subgraphs = {
-				@NamedSubgraph(
-					name = "usuarioRoles-subgraph",
-					attributeNodes = {
-						@NamedAttributeNode("rol")
-					}
-				)
-			}
-)
 
 @Table(name = "usuarios", schema = "eventos")
 public class Usuario implements Serializable {
@@ -54,8 +40,8 @@ public class Usuario implements Serializable {
 	@OneToMany(mappedBy = "usuario")
 	private Set<UsuarioRol> usuarioRoles;
 	
-	@OneToMany(mappedBy = "usuario")
-	private Set<Inscripcion> inscripciones;
+//	@OneToMany(mappedBy = "usuario")
+//	private Set<Inscripcion> inscripciones;
 	
 	public UUID getId() {
 		return id;
@@ -104,12 +90,14 @@ public class Usuario implements Serializable {
 	public void setUsuarioRoles(Set<UsuarioRol> usuarioRoles) {
 		this.usuarioRoles = usuarioRoles;
 	}
+
+//	public Set<Inscripcion> getInscripciones() {
+//		return inscripciones;
+//	}
+//
+//	public void setInscripciones(Set<Inscripcion> inscripciones) {
+//		this.inscripciones = inscripciones;
+//	}
 	
-	public Set<Inscripcion> getInscripciones() {
-		return inscripciones;
-	}
 	
-	public void setInscripciones(Set<Inscripcion> inscripciones) {
-		this.inscripciones = inscripciones;
-	}
 }

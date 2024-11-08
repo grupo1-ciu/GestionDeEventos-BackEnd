@@ -65,10 +65,12 @@ public class UsuarioService implements UserDetailsService {
     	return this.usuarioRepository.findWithUsuarioRolesByEmail(email);
     }
     
-  @Transactional(readOnly = true)
-    public Usuario getUsuarioWithInscripciones(String email) {
-  	return this.usuarioRepository.findWithInscripcionesByEmail(email);
-  }
+
+    @Transactional(readOnly = true)
+    public Optional<Usuario> getByEmail(String email) {
+    	return this.usuarioRepository.findByEmail(email);
+    }
+
     
     @Transactional(readOnly = true)
     public UsuarioLoginDto getUsuarioLoginDtoWithRolesRol(String email) {

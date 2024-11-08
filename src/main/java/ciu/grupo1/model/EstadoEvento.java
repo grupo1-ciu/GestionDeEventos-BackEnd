@@ -1,5 +1,6 @@
 package ciu.grupo1.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -18,7 +19,8 @@ public class EstadoEvento {
 	private Integer id;
 	
 	@Enumerated(EnumType.STRING)
-	private FaseEvento nombre;
+	@Column(name="nombre")
+	private FaseEvento nombreEstadoEvento;
 
    
     public int getId() {
@@ -30,11 +32,12 @@ public class EstadoEvento {
     }
 
 	public FaseEvento getNombreEstadoEvento() {
-		return nombre;
+		return nombreEstadoEvento;
 	}
 
 	public void setNombreEstadoEvento(FaseEvento nombreEstadoEvento) {
-		this.nombre = nombreEstadoEvento;
+		this.nombreEstadoEvento = nombreEstadoEvento;
 	}
+
 }
 

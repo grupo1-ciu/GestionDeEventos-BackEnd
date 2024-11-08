@@ -6,6 +6,7 @@ import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.UUID;
 
+import ciu.grupo1.dto.EventoDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
@@ -31,13 +32,22 @@ public class Evento implements Serializable{
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="estado")
 	private EstadoEvento estado;
-	
-	//@OneToMany(mappedBy = "evento")
-	//private HashSet<Inscripcion> inscripciones;
-	
+
+
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="tipo")
 	private TipoEvento tipo;
+	
+	public EventoDto toDto() {
+		EventoDto eventoDto = new EventoDto();
+		eventoDto.setCapacidad(capacidad);
+		eventoDto.setDescripcion(descripcion);
+		eventoDto.setFechaEvento(fechaEvento);
+		eventoDto.setHoraInicio(horaInicio);
+		eventoDto.setSala(sala);
+		
+		return eventoDto;
+	}
 
 	public UUID getId() {
 		return id;
@@ -63,6 +73,37 @@ public class Evento implements Serializable{
 		this.horaInicio = horaInicio;
 	}
 
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+  
+	public String getSala() {
+		return sala;
+	}
+
+	public void setSala(String sala) {
+		this.sala = sala;
+	}
+
+	public Integer getCapacidad() {
+		return capacidad;
+	}
+
+	public void setCapacidad(Integer capacidad) {
+		this.capacidad = capacidad;
+	}
+
+
+	public String getSala() {
+		return sala;
+	}
+	public void setSala(String sala) {
+		this.sala = sala;
+
 	public EstadoEvento getEstado() {
 		return estado;
 	}
@@ -77,29 +118,7 @@ public class Evento implements Serializable{
 
 	public void setTipo(TipoEvento tipo) {
 		this.tipo = tipo;
-	}
 
-	public String getDescripcion() {
-		return descripcion;
-	}
-
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
-	}
-
-	public Integer getCapacidad() {
-		return capacidad;
-	}
-
-	public void setCapacidad(Integer capacidad) {
-		this.capacidad = capacidad;
-	}
-
-	public String getSala() {
-		return sala;
-	}
-	public void setSala(String sala) {
-		this.sala = sala;
 	}
 	
 }
