@@ -47,9 +47,9 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.mariadb.jdbc</groupId>
-            <artifactId>mariadb-java-client</artifactId>
-            
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+             
         </dependency>
         <!-- JWT dependencies -->
         <dependency>

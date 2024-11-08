@@ -18,15 +18,15 @@ public class Inscripcion {
     private UUID id;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_usuario", nullable = false)
+    @JoinColumn(name = "id_usuario")
     private Usuario usuario;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_evento", nullable = false)
+    @JoinColumn(name = "id_evento")
     private Evento evento;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_estado_inscripcion", nullable = false)
+    @JoinColumn(name = "id_estado_inscripcion")
     private EstadoInscripcion estadoInscripcion;
     
   
@@ -47,7 +47,7 @@ public class Inscripcion {
 		return this.evento.getId();
 	}
 
-	public UUID getIdEstadoInscripcion() {
+	public int getIdEstadoInscripcion() {
 		return this.estadoInscripcion.getId();
 	}
 

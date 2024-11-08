@@ -14,18 +14,18 @@ import jakarta.persistence.Table;
 public class EstadoInscripcion {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO) // Generación automática de UUID
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Generación automática de UUID
+    private int id;
 
     @Enumerated(EnumType.STRING)
     private TipoEstadoInscripcion nombreEstadoInscripcion; // Enum para el estado de inscripción
 
     // Getters y Setters
-    public UUID getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(int id) {
         this.id = id;
     }
 
