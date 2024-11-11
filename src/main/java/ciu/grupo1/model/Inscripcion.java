@@ -58,6 +58,7 @@ public class Inscripcion {
 	
 	public InscripcionDto toDto() {
 		InscripcionDto inscripcionDto = new InscripcionDto();
+		inscripcionDto.setId(id.toString());
 		inscripcionDto.setEvento(this.evento.toDto());
 		inscripcionDto.setEstadoInscripcion(this.estadoInscripcion.toDto());
 		inscripcionDto.setUsuario(this.usuario.toAdminDto());
@@ -95,6 +96,4 @@ public class Inscripcion {
 	public void setEstadoInscripcion(EstadoInscripcion estadoInscripcion) {
 		this.estadoInscripcion = estadoInscripcion;
 	}
-	
-	
 }

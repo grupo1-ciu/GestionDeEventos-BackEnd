@@ -53,9 +53,6 @@ public class Usuario implements Serializable {
 		return usuarioDto;
 	}
 	
-//	@OneToMany(mappedBy = "usuario")
-//	private Set<Inscripcion> inscripciones;
-	
 	public UUID getId() {
 		return id;
 	}

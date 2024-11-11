@@ -1,6 +1,5 @@
-FROM maven:3.9.9-ibm-semeru-23-jammy
+FROM openjdk:17-jdk-alpine
 WORKDIR /app
-COPY . .
-RUN mvn clean package -DskipTests
+COPY target/*.jar eventos.jar
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","/app/ciu.grupo1.jar"]
+ENTRYPOINT ["java","-jar","/app/eventos.jar"]

@@ -2,10 +2,18 @@ package ciu.grupo1.dto;
 
 public class InscripcionDto {
 	
+	private String id;
 	private UsuarioAdminDto usuario;
 	private EventoDto evento;
 	private EstadoInscripcionDto estadoInscripcion;
 	
+	
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
 	public UsuarioAdminDto getUsuario() {
 		return usuario;
 	}
