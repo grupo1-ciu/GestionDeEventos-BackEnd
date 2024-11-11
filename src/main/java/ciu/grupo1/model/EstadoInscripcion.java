@@ -1,5 +1,6 @@
 package ciu.grupo1.model;
 
+import ciu.grupo1.dto.EstadoInscripcionDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -16,7 +17,13 @@ public class EstadoInscripcion {
 	private int id;
 	
 	@Enumerated(EnumType.STRING)
-	private TipoEstadoInscripcion nombreEstadoInscripcion;
+	private TipoEstadoInscripcion nombre;
+	
+	public EstadoInscripcionDto toDto() {
+		EstadoInscripcionDto estadoInscripcionDto = new EstadoInscripcionDto();
+		estadoInscripcionDto.setEstado(this.nombre.toString());
+		return estadoInscripcionDto;
+	}
 
 	public int getId() {
 		return id;
@@ -26,11 +33,11 @@ public class EstadoInscripcion {
 		this.id = id;
 	}
 
-	public TipoEstadoInscripcion getNombreEstadoInscripcion() {
-		return nombreEstadoInscripcion;
+	public TipoEstadoInscripcion getNombre() {
+		return nombre;
 	}
 
-	public void setNombreEstadoInscripcion(TipoEstadoInscripcion nombreEstadoInscripcion) {
-		this.nombreEstadoInscripcion = nombreEstadoInscripcion;
+	public void setNombre(TipoEstadoInscripcion nombreEstadoInscripcion) {
+		this.nombre = nombreEstadoInscripcion;
 	}
 }

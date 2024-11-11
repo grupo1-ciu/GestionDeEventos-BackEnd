@@ -4,7 +4,10 @@ import java.io.Serializable;
 import java.util.Set;
 import java.util.UUID;
 
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.Type;
 
+import ciu.grupo1.dto.UsuarioAdminDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.NamedAttributeNode;
@@ -33,7 +36,9 @@ import jakarta.persistence.Table;
 public class Usuario implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	
 	@Id
+	@JdbcTypeCode(org.hibernate.type.SqlTypes.VARCHAR)
 	private UUID id;
 	private String nombre;
 	private String apellido;
@@ -43,8 +48,10 @@ public class Usuario implements Serializable {
 	@OneToMany(mappedBy = "usuario")
 	private Set<UsuarioRol> usuarioRoles;
 	
-//	@OneToMany(mappedBy = "usuario")
-//	private Set<Inscripcion> inscripciones;
+	public UsuarioAdminDto toAdminDto() {
+		UsuarioAdminDto usuarioDto = new UsuarioAdminDto(this);
+		return usuarioDto;
+	}
 	
 	public UUID getId() {
 		return id;
