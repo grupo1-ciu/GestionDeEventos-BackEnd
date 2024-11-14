@@ -1,6 +1,7 @@
 package ciu.grupo1.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,9 +28,12 @@ import ciu.grupo1.service.UsuarioService;
 @EnableWebSecurity
 @EnableMethodSecurity(securedEnabled=true)
 public class SecurityConfig {
-	
+
     @Autowired
     private JwtAuthFilter authFilter;
+
+    @Value("${frontend.cors.url}")
+    private String corsUrl;
 
     @Bean
     public UserDetailsService userDetailsService() {
@@ -42,7 +46,7 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())// Disable CSRF for stateless APIs
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/auth/welcome", "/auth/login", "/auth/usuarios", "/auth/generateToken", "/evento/crearEvento").permitAll()
+                .requestMatchers("/", "/ping", "/auth/welcome", "/auth/login", "/auth/usuarios", "/auth/generateToken", "/evento/crearEvento").permitAll()
                 .anyRequest().authenticated() // Protect all other endpoints
             )
             .sessionManagement(sess -> sess
@@ -53,12 +57,14 @@ public class SecurityConfig {
 
         return http.build();
     }
-    
+
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowCredentials(true);
-        configuration.addAllowedOrigin("http://localhost:5173"); 
+        for (String split : corsUrl.split(",")) {
+            configuration.addAllowedOrigin(split);
+        }
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");
         configuration.addExposedHeader("Authorization");
@@ -85,5 +91,5 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
-	
+
 }

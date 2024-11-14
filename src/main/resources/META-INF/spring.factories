@@ -1,0 +1,1 @@
+org.springframework.boot.env.EnvironmentPostProcessor=ciu.grupo1.config.DockerSecretsProcessor
