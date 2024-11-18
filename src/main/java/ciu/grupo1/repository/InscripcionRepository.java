@@ -2,14 +2,23 @@ package ciu.grupo1.repository;
 
 import java.util.UUID;
 
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 import ciu.grupo1.model.Inscripcion;
+import java.util.List;
+import ciu.grupo1.model.Usuario;
 
-@Repository
-public interface InscripcionRepository extends JpaRepository<Inscripcion, UUID> {
-    
-   
-    boolean existsByUsuarioIdAndEventoId(UUID usuarioId, UUID eventoId);
-    int countByEventoId(UUID eventoId);
+
+public interface InscripcionRepository extends JpaRepository<Inscripcion, UUID>{
+	
+	public List<Inscripcion> findByUsuario(Usuario usuario);
+	
+	public abstract boolean existsByUsuario_IdAndEvento_Id(UUID idUsuario, UUID idEvento);
+
+
+	
+	long countByEventoId(UUID idEvento);
+	
+	@EntityGraph(value = "InscripcionesWithEventoAndUsuarioAndEstadoInscripcion")
+	public List<Inscripcion> findWithEventoAndUSuarioAndEstadoInscripcionByUsuario(Usuario usuario);
 }

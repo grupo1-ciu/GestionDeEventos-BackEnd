@@ -2,12 +2,9 @@ package ciu.grupo1.repository;
 
 import java.util.Optional;
 import java.util.UUID;
-
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-
 import ciu.grupo1.model.Usuario;
 import java.util.List;
 
@@ -25,11 +22,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, UUID> {
 	@EntityGraph(value = "UsuarioWithUsuarioRolesRol")
 	public Optional<Usuario> findWithUsuariosRolesRolByEmail(String email);
 	
-
-	@EntityGraph(value = "UsuarioFindWichId")
-	public Optional<Usuario> findById(UUID idUsuario);
-
 	public Usuario findUsuarioByEmail(String email);
-
 	
+	Optional<Usuario> findById(UUID id);
 }

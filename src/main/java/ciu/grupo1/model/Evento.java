@@ -3,8 +3,9 @@ package ciu.grupo1.model;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.HashSet;
 import java.util.UUID;
+
+import org.hibernate.annotations.JdbcTypeCode;
 
 import ciu.grupo1.dto.EventoDto;
 import jakarta.persistence.Entity;
@@ -12,16 +13,16 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "eventos", schema="eventos")
-public class Evento implements Serializable{
+public class Evento implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
 	@Id
+	@JdbcTypeCode(org.hibernate.type.SqlTypes.VARCHAR)
 	private UUID id;
 	private LocalDate fechaEvento;
 	private LocalTime horaInicio;
@@ -29,13 +30,13 @@ public class Evento implements Serializable{
 	private String sala;
 	private Integer capacidad;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="estado")
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "estado", referencedColumnName = "id") 
 	private EstadoEvento estado;
 
-
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="tipo")
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "tipo", referencedColumnName = "id") 
 	private TipoEvento tipo;
 	
 	public EventoDto toDto() {
@@ -45,9 +46,9 @@ public class Evento implements Serializable{
 		eventoDto.setFechaEvento(fechaEvento);
 		eventoDto.setHoraInicio(horaInicio);
 		eventoDto.setSala(sala);
-		
 		return eventoDto;
 	}
+
 
 	public UUID getId() {
 		return id;
@@ -80,7 +81,7 @@ public class Evento implements Serializable{
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
-  
+
 	public String getSala() {
 		return sala;
 	}
@@ -97,13 +98,6 @@ public class Evento implements Serializable{
 		this.capacidad = capacidad;
 	}
 
-
-	public String getSala() {
-		return sala;
-	}
-	public void setSala(String sala) {
-		this.sala = sala;
-
 	public EstadoEvento getEstado() {
 		return estado;
 	}
@@ -118,7 +112,5 @@ public class Evento implements Serializable{
 
 	public void setTipo(TipoEvento tipo) {
 		this.tipo = tipo;
-
 	}
-	
 }

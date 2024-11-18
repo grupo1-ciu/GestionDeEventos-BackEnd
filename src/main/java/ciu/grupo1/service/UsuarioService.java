@@ -4,12 +4,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import ciu.grupo1.dto.UsuarioLoginDto;
 import ciu.grupo1.dto.UsuarioRegistroDto;
 import ciu.grupo1.model.Rol;
@@ -38,7 +40,7 @@ public class UsuarioService implements UserDetailsService {
 
     @Override
     public UserInfoDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    	Optional <Usuario> usuarioDetalles = usuarioRepository.findWithUsuariosRolesRolByEmail(username); // Asumiendo que el 'email' es usado como nombre de usuario.
+    	Optional <Usuario> usuarioDetalles = usuarioRepository.findWithUsuariosRolesRolByEmail(username);
 
         return usuarioDetalles.map(UserInfoDetails::new)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
@@ -48,9 +50,14 @@ public class UsuarioService implements UserDetailsService {
     	return this.usuarioRepository.findAll();
     }
 
+    public Usuario obtenerUsuarioPorId(UUID idUsuario) {
+        Optional<Usuario> usuario = usuarioRepository.findById(idUsuario);
+        return usuario.orElse(null);
+    }
+    
     public String addUser(UsuarioRegistroDto usuarioDto) {
     	Usuario usuario = usuarioDto.toModel(true);
-
+        // Encode password before saving the user
         usuario.setPassword(encoder.encode(usuario.getPassword()));
         Rol rol = this.rolRepository.findByNombre(TipoRol.ROLE_USER);
         System.out.println(usuario.getId());
@@ -65,38 +72,32 @@ public class UsuarioService implements UserDetailsService {
     	return this.usuarioRepository.findWithUsuarioRolesByEmail(email);
     }
     
-
     @Transactional(readOnly = true)
     public Optional<Usuario> getByEmail(String email) {
     	return this.usuarioRepository.findByEmail(email);
     }
-
     
     @Transactional(readOnly = true)
     public UsuarioLoginDto getUsuarioLoginDtoWithRolesRol(String email) {
-    	UsuarioLoginDto usuarioLoginDto = new UsuarioLoginDto();
-    	Optional<Usuario> usuario = this.usuarioRepository.findWithUsuariosRolesRolByEmail(email);
-    
-    	List<String> roles = (usuario.get().getUsuarioRoles().stream()
-    							.map(ur -> ur.getRol().getNombre().toString())
-    							.collect(Collectors.toList()));
-    	
-    	usuarioLoginDto.setNombre(usuario.get().getNombre());
-    	usuarioLoginDto.setApellido(usuario.get().getApellido());
-    	usuarioLoginDto.setRoles(roles);
-    	
-    	return usuarioLoginDto;
+        Usuario usuario = usuarioRepository.findWithUsuariosRolesRolByEmail(email)
+                             .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado con email: " + email));
+
+        List<String> roles = usuario.getUsuarioRoles().stream()
+                                    .map(ur -> ur.getRol().getNombre().toString())
+                                    .collect(Collectors.toList());
+
+        return new UsuarioLoginDto(
+            usuario.getNombre(),
+            usuario.getApellido(),
+            usuario.getEmail(),
+            roles
+        );
     }
+
     
     public List<String> getRolesByUsuarioEmail(String email) {
     	UsuarioLoginDto usuarioLoginDto = this.getUsuarioLoginDtoWithRolesRol(email);
     	return usuarioLoginDto.getRoles();
-    }
-    
-
-    public Usuario obtenerUsuarioPorId(UUID idUsuario) {
-        return usuarioRepository.findById(idUsuario)
-            .orElseThrow(() -> new RuntimeException("Usuario no encontrado con el ID: " + idUsuario));
     }
     
     private void crearYGuardarUsuarioRol(Rol rol, Usuario usuario) {
