@@ -21,10 +21,17 @@ public class InscripcionController {
 	@Autowired
 	private InscripcionService inscripcionService;
 	
-	@GetMapping("/{email}")
-	@PreAuthorize("hasAuthority('ROLE_USER')")
+	@GetMapping("/usuarios/{email}")
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	public ResponseEntity<List<InscripcionDto>> findInscripcionesByEmail(@PathVariable String email) {
 		List<InscripcionDto> inscripciones = this.inscripcionService.getByEmail(email);
 		return ResponseEntity.ok(inscripciones);
 	}
+	
+	@GetMapping("/{email}")
+	public ResponseEntity<List<InscripcionDto>> findInscripcionesAceptadasYPendientesByEmail(@PathVariable String email) {
+		List<InscripcionDto> inscripciones = this.inscripcionService.getAceptadasYPendientesByEmail(email);
+		return ResponseEntity.ok(inscripciones);
+	}
+	
 }
