@@ -1,5 +1,6 @@
 package ciu.grupo1.service;
 
+
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -34,20 +35,27 @@ public class InscripcionService {
 	
 	@Transactional(readOnly = true)
 	public List<InscripcionDto> getByEmail(String email) {
-		
-		Usuario usuario= this.usuarioRepository.findByEmail(email).get();
-		List<Inscripcion> inscripciones = this.inscripcionRepository.findWithEventoAndUsuarioAndEstadoInscripcionByUsuario(usuario);
-		
-		inscripciones.forEach(i -> System.out.println(i.getId()));
-		
+		Usuario usuario= this.usuarioRepository.findByEmail(email).orElse(null);
+		List<Inscripcion> inscripciones = this.inscripcionRepository.findWithEventoAndUsuarioAndEstadoInscripcionByUsuario(usuario);		
+
 		List<InscripcionDto> inscripcionesDto = inscripciones.stream()
 													.map(inscripcion -> inscripcion.toDto())
-													.collect(Collectors.toList());
-		
+													.collect(Collectors.toList());		
 		return inscripcionesDto;
 		
 	}
 	
+
+	@Transactional(readOnly = true)
+	public List<InscripcionDto> getAceptadasYPendientesByEmail(String email) {
+		Usuario usuario = this.usuarioRepository.findByEmail(email).orElse(null);
+		List<Inscripcion> inscripciones = this.inscripcionRepository.findPendientesAndAceptadasByUsuario(usuario);
+		List<InscripcionDto> inscripcionesDto = inscripciones.stream()
+													.map(i -> i.toDto())
+													.collect(Collectors.toList());
+		return inscripcionesDto;
+  }
+  
 	@Transactional
 	public InscripcionDto cambiarEstadoInscripcion(InscripcionDto inscripcionDto) {
 		UUID idInscripcion = UUID.fromString(inscripcionDto.getId());
@@ -64,5 +72,6 @@ public class InscripcionService {
 		this.inscripcionRepository.save(inscripcionACambiar);
 		
 		return inscripcionACambiar.toDto();
+
 	}
 }
