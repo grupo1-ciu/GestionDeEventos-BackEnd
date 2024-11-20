@@ -25,14 +25,10 @@ import jakarta.persistence.Table;
 		@NamedAttributeNode("evento"),
 		@NamedAttributeNode("estadoInscripcion")	
 	}
-//	subgraphs = {
-//		@NamedSubgraph(
-//			name = "estadoInscripcion-subgraph",
-//			attributeNodes = {
-//				@NamedAttributeNode("nombre")
-//			}
-//		)
-//	}
+)
+
+@NamedEntityGraph(name="InscripcionWithEstadoInscripcion", 
+	attributeNodes = @NamedAttributeNode("estadoInscripcion")
 )
 
 @Entity
