@@ -1,19 +1,13 @@
 package ciu.grupo1.controller;
 
 
-import java.util.ArrayList;
 import java.util.List;
 
-
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,8 +25,8 @@ public class EventoController {
 
 	@GetMapping
 	@PreAuthorize("hasAuthority('ROLE_USER')")
-	public List<EventoDto> buscarEventos(){
-		List<Evento> eventos = this.eventoService.getAllEventos();
+	public List<EventoDto> buscarEventosDisponibles(){
+		List<Evento> eventos = this.eventoService.getAllEventosDisponibles();
 		List<EventoDto> eventosDto = eventos.stream().map(evento -> evento.toDto()).toList();
 		return eventosDto;
 	}
