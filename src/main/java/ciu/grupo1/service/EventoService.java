@@ -35,6 +35,7 @@ public class EventoService {
 	@Autowired
 	private TipoEventoRepository tipoEventoRepository;
 	
+	@Transactional(readOnly = true)
 	public List<Evento> getAllEventos(){
 		return this.eventoRepository.findAll();
 	}
@@ -55,5 +56,10 @@ public class EventoService {
 		eventoRepository.save(evento);
 		
 		return evento;
+	}
+	
+	@Transactional(readOnly = true)
+	public List<Evento> getAllEventosDisponibles() {
+		return this.eventoRepository.findAllDisponibles();
 	}
 }
