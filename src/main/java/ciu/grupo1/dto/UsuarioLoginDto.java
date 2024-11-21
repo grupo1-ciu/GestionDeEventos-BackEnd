@@ -9,6 +9,12 @@ public class UsuarioLoginDto extends UsuarioDto {
 	
 	
 
+
+	public UsuarioLoginDto() {
+		// TODO Auto-generated constructor stub
+	}
+
+
 	public String getEmail() {
 		return email;
 	}
