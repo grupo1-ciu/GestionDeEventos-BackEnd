@@ -9,12 +9,14 @@ import ciu.grupo1.model.Evento;
 
 public class EventoDto {
 	
+	private String id;
 	private LocalDate fechaEvento;
 	private LocalTime horaInicio;
 	private String descripcion;
 	private String sala;
 	private Integer capacidad;
-	private String tipoEvento;
+	private TipoEventoDto tipoEvento;
+	private EstadoEventoDto estadoEvento;
 	
 	public Evento toModel() {
 		Evento evento = new Evento();
@@ -68,14 +70,29 @@ public class EventoDto {
 		this.capacidad = capacidad;
 	}
 
-	public String getTipoEvento() {
+	public TipoEventoDto getTipoEvento() {
 		return tipoEvento;
 	}
 
-	public void setTipoEvento(String tipoEvento) {
+	public void setTipoEvento(TipoEventoDto tipoEvento) {
 		this.tipoEvento = tipoEvento;
 	}
-	
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public EstadoEventoDto getEstadoEvento() {
+		return estadoEvento;
+	}
+
+	public void setEstadoEvento(EstadoEventoDto estadoEventoDto) {
+		this.estadoEvento = estadoEventoDto;
+	}
 	
 	
 }
