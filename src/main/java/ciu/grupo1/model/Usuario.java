@@ -5,7 +5,6 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.annotations.Type;
 
 import ciu.grupo1.dto.UsuarioAdminDto;
 import jakarta.persistence.Entity;
@@ -101,13 +100,6 @@ public class Usuario implements Serializable {
 		this.usuarioRoles = usuarioRoles;
 	}
 
-//	public Set<Inscripcion> getInscripciones() {
-//		return inscripciones;
-//	}
-//
-//	public void setInscripciones(Set<Inscripcion> inscripciones) {
-//		this.inscripciones = inscripciones;
-//	}
 	
 	
 }

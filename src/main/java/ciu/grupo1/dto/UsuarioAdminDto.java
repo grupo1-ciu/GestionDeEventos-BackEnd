@@ -1,9 +1,5 @@
 package ciu.grupo1.dto;
 
-
-import java.util.Set;
-
-import ciu.grupo1.model.Inscripcion;
 import ciu.grupo1.model.Usuario;
 
 public class UsuarioAdminDto extends UsuarioDto{

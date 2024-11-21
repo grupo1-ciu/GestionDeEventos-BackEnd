@@ -1,6 +1,6 @@
 package ciu.grupo1.dto;
 
-import ciu.grupo1.model.Usuario;
+
 
 public class UsuarioDto {
 	

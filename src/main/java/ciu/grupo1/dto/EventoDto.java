@@ -2,9 +2,6 @@ package ciu.grupo1.dto;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.UUID;
-
-import ciu.grupo1.model.EstadoEvento;
 import ciu.grupo1.model.Evento;
 
 public class EventoDto {

@@ -19,6 +19,14 @@ public class EstadoEvento {
 	@Enumerated(EnumType.STRING)
 	@Column(name="nombre")
 	private FaseEvento nombreEstadoEvento;
+	
+	public EstadoEvento() {
+	 
+	}
+	 
+	public EstadoEvento(FaseEvento nombreEstadoEvento) {
+	    this.nombreEstadoEvento = nombreEstadoEvento;
+	}
 
 	public Integer getId() {
 		return id;
@@ -35,5 +43,12 @@ public class EstadoEvento {
 	public void setNombreEstadoEvento(FaseEvento nombreEstadoEvento) {
 		this.nombreEstadoEvento = nombreEstadoEvento;
 	}
+	@Override
+    public String toString() {
+        return "EstadoEvento{" +
+                "id=" + id +
+                ", nombreEstadoEvento=" + nombreEstadoEvento +
+                '}';
+    }
 
 }
