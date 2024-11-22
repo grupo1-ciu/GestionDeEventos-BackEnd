@@ -54,7 +54,7 @@ public class InscripcionController {
 	
 
 	@GetMapping("/{email}")
-  @PreAuthorize("hasAuthority('ROLE_USER')")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
 	public ResponseEntity<List<InscripcionDto>> findInscripcionesAceptadasYPendientesByEmail(@PathVariable String email) {
 		List<InscripcionDto> inscripciones = this.inscripcionService.getAceptadasYPendientesByEmail(email);
 		return ResponseEntity.ok(inscripciones);

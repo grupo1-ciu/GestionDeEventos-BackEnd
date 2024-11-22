@@ -7,17 +7,28 @@ import java.util.UUID;
 
 import org.hibernate.annotations.JdbcTypeCode;
 
+import ciu.grupo1.dto.EstadoEventoDto;
 import ciu.grupo1.dto.EventoDto;
+import ciu.grupo1.dto.TipoEventoDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedAttributeNode;
+import jakarta.persistence.NamedEntityGraph;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "eventos", schema="eventos")
-public class Evento implements Serializable {
+@NamedEntityGraph( name="EventoWithEstadoAndTipoEvento",
+	attributeNodes = {
+			@NamedAttributeNode("estado"),
+			@NamedAttributeNode("tipo")
+	}	
+)
+public class Evento implements Serializable{
+
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -41,11 +52,24 @@ public class Evento implements Serializable {
 	
 	public EventoDto toDto() {
 		EventoDto eventoDto = new EventoDto();
+		TipoEventoDto tipoEventoDto = new TipoEventoDto();
+		EstadoEventoDto estadoEventoDto = new EstadoEventoDto();
+		
+		String uuidString = this.getId().toString();
+		
+		eventoDto.setId(uuidString);
 		eventoDto.setCapacidad(capacidad);
 		eventoDto.setDescripcion(descripcion);
 		eventoDto.setFechaEvento(fechaEvento);
 		eventoDto.setHoraInicio(horaInicio);
 		eventoDto.setSala(sala);
+		
+		estadoEventoDto.setNombreEstado(this.getEstado().getNombreEstadoEvento().toString());
+		eventoDto.setEstadoEvento(estadoEventoDto);
+		
+		tipoEventoDto.setNombre(this.getTipo().getNombre().toString());
+		eventoDto.setTipoEvento(tipoEventoDto);
+
 		return eventoDto;
 	}
 
