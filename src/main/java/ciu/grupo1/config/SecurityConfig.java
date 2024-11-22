@@ -63,7 +63,7 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowCredentials(true);
         for (String split : corsUrl.split(",")) {
-            configuration.addAllowedOrigin(split);
+        	configuration.addAllowedOriginPattern(split);        
         }
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");

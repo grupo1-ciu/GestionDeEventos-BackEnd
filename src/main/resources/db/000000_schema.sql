@@ -1,30 +1,30 @@
 USE eventos;
 
-CREATE TABLE tipos_eventos (
+CREATE TABLE eventos.tipos_eventos (
 	id INT NOT NULL AUTO_INCREMENT,
 	nombre VARCHAR(100),
 	CONSTRAINT tipo_evento_pkey PRIMARY KEY (id)
 );
 
-CREATE TABLE estados_eventos (
+CREATE TABLE eventos.estados_eventos (
 	id INT NOT NULL AUTO_INCREMENT,
 	nombre VARCHAR(100),
 	CONSTRAINT estado_evento_pkey PRIMARY KEY (id)
 );
 
-CREATE TABLE estados_inscripciones (
+CREATE TABLE eventos.estados_inscripciones (
 	id INT NOT NULL AUTO_INCREMENT,
 	nombre VARCHAR(100),
 	CONSTRAINT estado_inscripciones_pkey PRIMARY KEY (id)
 );
 
-CREATE TABLE roles (
+CREATE TABLE eventos.roles (
 	id INT NOT NULL AUTO_INCREMENT,
 	nombre VARCHAR(100),
 	CONSTRAINT roles_pkey PRIMARY KEY(id)
 );
 
-CREATE TABLE usuarios (
+CREATE TABLE eventos.usuarios (
 	id UUID NOT NULL,
 	nombre VARCHAR(100) NOT NULL,
 	apellido VARCHAR(100) NOT NULL,
@@ -33,7 +33,7 @@ CREATE TABLE usuarios (
 	CONSTRAINT id_usuario_pkey PRIMARY KEY (id)
 );
 
-CREATE TABLE usuarios_roles(
+CREATE TABLE eventos.usuarios_roles(
 	id INT NOT NULL AUTO_INCREMENT,
 	usuario_id UUID NOT NULL,
 	rol_id INT NOT NULL,
@@ -42,29 +42,21 @@ CREATE TABLE usuarios_roles(
 	CONSTRAINT usuariosroles_roles_fkey FOREIGN KEY (rol_id) REFERENCES eventos.roles(id)
 );
 
-CREATE TABLE salas(
+CREATE TABLE eventos.eventos(
 	id UUID NOT NULL,
-	nombre VARCHAR(100) NOT NULL,
-	capacidad INT(50) NOT NULL,
-	direccion VARCHAR(320) NOT NULL,
-	CONSTRAINT id_sala_pkey PRIMARY KEY (id)
-);
-
-CREATE TABLE eventos(
-	id UUID NOT NULL,
-	sala UUID NOT NULL,
+	sala VARCHAR (255),
+	capacidad INT,
+	descripcion VARCHAR(255),
 	fecha_evento DATE NOT NULL,
-	hora_inicio DATETIME NOT NULL,
-	hora_fin DATETIME NOT NULL,
+	hora_inicio TIME NOT NULL,
 	estado INT NOT NULL,
 	tipo INT NOT NULL,
 	CONSTRAINT id_evento_pkey PRIMARY KEY (id),
-	CONSTRAINT eventos_salas_fkey FOREIGN KEY (sala) REFERENCES eventos.salas(id),
 	CONSTRAINT eventos_estados_fkey FOREIGN KEY (estado) REFERENCES eventos.estados_eventos(id),
 	CONSTRAINT eventos_tipos_fkey FOREIGN KEY (tipo) REFERENCES eventos.tipos_eventos(id)
 );
 
-CREATE TABLE inscripciones(
+CREATE TABLE eventos.inscripciones(
 	id UUID NOT NULL,
 	id_usuario UUID NOT NULL,
 	id_evento UUID NOT NULL,

@@ -1,0 +1,93 @@
+# Vamos a contar con 3 servicios, la BBDD, el backend y el frontend
+###################################################################
+
+services:
+  db:
+    image: mariadb:latest
+    environment:
+      - MYSQL_DATABASE=eventos
+      - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db-password
+    restart: always
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      start_period: 30s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    secrets:
+      - db-password
+    networks:
+      - backend-to-db-network
+    ports:
+      - 3306:3306
+    volumes:
+      # Levantamos 2 volumenes, el primero en docker-entrypoint-initdb.d
+      # Los scripts colocados ahí se ejecutan la primera vez que se crean
+      # los datos cargador allí se ejecutan solo la primera vez que se levanta
+      # la base, si no hay datos previamente creados
+      - ./backend/src/main/resources/db:/docker-entrypoint-initdb.d
+      # El segundo volumen, lo va a manejar docker, por eso lo asociamos
+      # a un volume y no una carpeta en el host. Lo que va a hacer es que los
+      # datos de mysql se persistan en el host, en una carpeta temporal que
+      # administra docker. Cada vez que levantemos, son los mismos datos, salvo
+      # que borremos el volumen.
+      - db-data:/var/lib/mysql
+
+
+  backend:
+    build:
+      context: backend
+      target: run_in_dev
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      # La URL debe apuntar al mismo nombre que el del servicio de la BBDD
+      - SPRING_DB_CONNECTION_STRING=jdbc:mysql://db:3306/eventos
+      # Por default el usuario es root
+      - SPRING_DB_USERNAME=root
+      # Y el password debe leerse de ese archivo
+      # (lo carga solo compose cuando levanta el container)
+      # copiando el nuestro
+      - SPRING_DB_PASSWORD=/run/secrets/db-password
+      # Necesitamos la URL del frontend, ya que de esta forma evitamos
+      # problemas de CORS. Cualquier puerto de frontend debería ser válido.
+      - SPRING_CORS_URLS=http://localhost:*,http://frontend:*
+    restart: always
+    secrets:
+      - db-password
+    ports:
+      - 8080:8080
+    networks:
+      - backend-to-db-network
+      - frontend-to-backend-network
+
+
+  frontend:
+    build:
+      context: frontend
+      target: run_in_dev
+    depends_on:
+      - backend
+    environment:
+      # La URL debe ser modificable desde acá, ya que si se elige otro puerto
+      # otra URL para el backend, no va a funcionar.
+      - VITE_BACKEND_URL=http://backend:8080/eventostp
+    networks:
+      -  frontend-to-backend-network
+    ports:
+      - 5173:5173
+
+
+# Acá creamos la configuración global para todos los elementos
+##############################################################
+secrets:
+  db-password:
+    file: secrets/db_pass.txt
+
+networks:
+  backend-to-db-network: {}
+  frontend-to-backend-network: {}
+
+volumes:
+  db-data: {}
