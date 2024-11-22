@@ -1,17 +1,14 @@
 package ciu.grupo1.service;
 
-
 import java.util.List;
+import java.util.Optional;
 
 import ciu.grupo1.model.Evento;
 
-
 import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import ciu.grupo1.dto.EventoDto;
 import ciu.grupo1.model.CategoriaEvento;
 import ciu.grupo1.model.EstadoEvento;
@@ -37,6 +34,11 @@ public class EventoService {
 	public List<Evento> getAllEventos(){
 		return this.eventoRepository.findAll();
 	}
+	
+    public Evento obtenerEventoPorId(UUID idEvento) {
+        Optional<Evento> evento = eventoRepository.findById(idEvento);
+        return evento.orElse(null);
+    }
 	
 	@Transactional
 	public Evento addEvent(EventoDto eventoDto) {
@@ -68,4 +70,5 @@ public class EventoService {
 		
 		return evento.toDto();
 	}
+
 }
