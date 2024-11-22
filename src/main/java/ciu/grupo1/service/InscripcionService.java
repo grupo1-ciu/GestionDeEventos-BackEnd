@@ -2,7 +2,6 @@ package ciu.grupo1.service;
 
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -11,8 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ciu.grupo1.dto.EstadoInscripcionDto;
+import ciu.grupo1.dto.EventoDto;
 import ciu.grupo1.dto.InscripcionDto;
-import ciu.grupo1.dto.UsuarioRegistroDto;
+import ciu.grupo1.dto.UsuarioAdminDto;
 import ciu.grupo1.model.EstadoInscripcion;
 import ciu.grupo1.model.Inscripcion;
 import ciu.grupo1.model.TipoEstadoInscripcion;
@@ -45,6 +45,36 @@ public class InscripcionService {
 		
 	}
 	
+	@SuppressWarnings("unused")
+	private InscripcionDto inscripcionADto(Inscripcion inscripcion) {
+	    InscripcionDto dto = new InscripcionDto();
+	    dto.setId(inscripcion.getId().toString());
+
+	   
+	    Usuario Usuario= new Usuario();
+		UsuarioAdminDto usuarioDto = new UsuarioAdminDto(Usuario);
+	    usuarioDto.setNombre(inscripcion.getUsuario().getNombre());
+	    usuarioDto.setApellido(inscripcion.getUsuario().getApellido());
+	    usuarioDto.setEmail(inscripcion.getUsuario().getEmail());
+	    dto.setUsuario(usuarioDto);
+
+
+	    EventoDto eventoDto = new EventoDto();
+	    eventoDto.setFechaEvento(inscripcion.getEvento().getFechaEvento());
+	    eventoDto.setHoraInicio(inscripcion.getEvento().getHoraInicio());
+	    eventoDto.setDescripcion(inscripcion.getEvento().getDescripcion());
+	    eventoDto.setSala(inscripcion.getEvento().getSala());
+	    eventoDto.setCapacidad(inscripcion.getEvento().getCapacidad());
+	    dto.setEvento(eventoDto);
+
+	    EstadoInscripcionDto estadoDto = new EstadoInscripcionDto();
+	    estadoDto.setEstado(inscripcion.getEstadoInscripcion().getNombre().name());
+	    dto.setEstadoInscripcion(estadoDto);
+
+	    return dto;
+	}
+
+	
 
 	@Transactional(readOnly = true)
 	public List<InscripcionDto> getAceptadasYPendientesByEmail(String email) {
@@ -74,4 +104,12 @@ public class InscripcionService {
 		return inscripcionACambiar.toDto();
 
 	}
+
+    
+    public List<InscripcionDto> getPendientes() {
+        return inscripcionRepository.findPendientes()
+                .stream()
+                .map(this::inscripcionADto) 
+                .collect(Collectors.toList());
+    }
 }

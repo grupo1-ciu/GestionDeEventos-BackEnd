@@ -38,6 +38,12 @@ public class InscripcionController {
 		return ResponseEntity.ok(inscripciones);
 	}
 	
+    @GetMapping("/pendientes")
+    @PreAuthorize("hasAuthority('ROLE_OPERATOR')")
+    public ResponseEntity<List<InscripcionDto>> obtenerPendientes() {
+        List<InscripcionDto> pendientes = inscripcionService.getPendientes();
+        return ResponseEntity.ok(pendientes);
+    }
 
 	@PutMapping
 	@PreAuthorize("hasAuthority('ROLE_USER')")
