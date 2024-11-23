@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ciu.grupo1.dto.EstadoInscripcionDto;
 import ciu.grupo1.dto.InscripcionDto;
 import ciu.grupo1.model.EstadoInscripcion;
+import ciu.grupo1.model.Evento;
 import ciu.grupo1.model.Inscripcion;
 import ciu.grupo1.model.TipoEstadoInscripcion;
 import ciu.grupo1.model.Usuario;
@@ -75,19 +76,17 @@ public class InscripcionService {
 
 	
     @Transactional(readOnly = true)
-    public boolean estaInscrito(UUID uuid, UUID idEvento) {
-        return inscripcionRepository.existsByUsuario_IdAndEvento_Id(uuid, idEvento);
+    public boolean estaInscrito(Usuario usuario, UUID idEvento) {
+    	List<Inscripcion> inscripciones = inscripcionRepository.findPendientesAndAceptadasByUsuario(usuario);
+        
+        Boolean estaInscriptoEnEvento = inscripciones.stream().anyMatch(i -> i.getEvento().getId().equals(idEvento));
+        
+        return estaInscriptoEnEvento;
     }
 	
 
 	@Transactional
 	public void guardarInscripcion(Inscripcion inscripcion) {
-	  
-	    boolean existe = inscripcionRepository.existsByUsuario_IdAndEvento_Id(inscripcion.getUsuario().getId(), inscripcion.getEvento().getId());
-	    if (existe) {
-	        throw new IllegalArgumentException("El usuario ya está inscrito en este evento");
-	    }
-
 	    inscripcionRepository.save(inscripcion);
 	}
 	

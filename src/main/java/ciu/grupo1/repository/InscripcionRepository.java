@@ -23,8 +23,6 @@ public interface InscripcionRepository extends JpaRepository<Inscripcion, UUID>{
 	@EntityGraph(value = "InscripcionesWithEventoAndUsuarioAndEstadoInscripcion")
 	public List<Inscripcion> findWithEventoAndUsuarioAndEstadoInscripcionByUsuario(Usuario usuario);
 	
-
-	
 	@EntityGraph(value = "InscripcionesWithEventoAndUsuarioAndEstadoInscripcion")
 	@Query("SELECT i FROM Inscripcion i "
 			+ "WHERE (i.estadoInscripcion.nombre = ACEPTADA OR i.estadoInscripcion.nombre = PENDIENTE) "

@@ -68,44 +68,49 @@ public class InscripcionController {
 		return ResponseEntity.ok(inscripcion);
 	}
 	
-	   @PostMapping
-	    @PreAuthorize("hasAuthority('ROLE_USER')")
-	    public ResponseEntity<String> inscribirUsuario(@RequestBody InscripcionRequestDto inscripcionRequest) {
+    @PostMapping
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    public ResponseEntity<String> inscribirUsuario(@RequestBody InscripcionRequestDto inscripcionRequest) {
 
-	        UUID idEvento = inscripcionRequest.getIdEvento();
-	        String emailUsuario = inscripcionRequest.getEmailUsuario();
+        UUID idEvento = inscripcionRequest.getIdEvento();
+        String emailUsuario = inscripcionRequest.getEmailUsuario();
 
-	        Usuario usuario = usuarioService.getByEmail(emailUsuario).orElse(null);
-	        if (usuario == null) {
-	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");
-	        }
+        Usuario usuario = usuarioService.getByEmail(emailUsuario).orElse(null);
+        if (usuario == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");
+        }
 
-	        if (inscripcionService.estaInscrito(usuario.getId(), idEvento)) {
-	            return ResponseEntity.status(HttpStatus.CONFLICT).body("El usuario ya está inscrito en el evento");
-	        }
+        if (inscripcionService.estaInscrito(usuario, idEvento)) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Ya está inscripto a este evento");
+        }
+        
+        if (inscripcionService.getAceptadasYPendientesByEmail(emailUsuario).size() >= 3) {
+        	return ResponseEntity.status(HttpStatus.CONFLICT).body("Ya tienes 3 inscripciones pendientes");
+        }
 
-	        Evento evento = eventoService.obtenerEventoPorId(idEvento);
-	        if (evento == null) {
-	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Evento no encontrado");
-	        }
+        Evento evento = eventoService.obtenerEventoPorId(idEvento);
+        if (evento == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Evento no encontrado");
+        }
 
-	        int cuposDisponibles = (int) (evento.getCapacidad() - inscripcionService.contarInscripciones(idEvento));
-	        if (cuposDisponibles <= 0) {
-	            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No hay cupos disponibles para el evento");
-	        }
+        int cuposDisponibles = (int) (evento.getCapacidad() - inscripcionService.contarInscripciones(idEvento));
+        if (cuposDisponibles <= 0) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No hay cupos disponibles para el evento");
+        }
 
-	        if (!evento.getEstado().getNombreEstadoEvento().name().equalsIgnoreCase("DISPONIBLE")) {
-	            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El evento no está abierto para inscripciones");
-	        }
+        if (!evento.getEstado().getNombreEstadoEvento().name().equalsIgnoreCase("DISPONIBLE")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El evento no está abierto para inscripciones");
+        }
 
-	        Inscripcion inscripcion = new Inscripcion();
-	        inscripcion.setUsuario(usuario);
-	        inscripcion.setEvento(evento);
-	        inscripcion.setEstadoInscripcion(this.estadoInscripcionService.setEstadoPendiente());
-	        inscripcionService.guardarInscripcion(inscripcion);
+        Inscripcion inscripcion = new Inscripcion();
+        inscripcion.setId(UUID.randomUUID());
+        inscripcion.setUsuario(usuario);
+        inscripcion.setEvento(evento);
+        inscripcion.setEstadoInscripcion(this.estadoInscripcionService.setEstadoPendiente());
+        inscripcionService.guardarInscripcion(inscripcion);
 
-	        return ResponseEntity.ok("Inscripción realizada con éxito");
-	    }
+        return ResponseEntity.ok("Inscripción realizada con éxito");
+    }
 
 
 }
