@@ -2,6 +2,7 @@ package ciu.grupo1.controller;
 
 
 import java.util.List;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,12 +39,9 @@ public class EventoController {
 		return ResponseEntity.ok(eventoDto);
 	}
 	
-	@PostMapping()
+	@PostMapping
 	public EventoDto addNewEvent(@RequestBody EventoDto eventoDto) {
-		EventoDto eventoDto1 = new EventoDto();
-	
-		return eventoDto1;
+	    Evento evento = eventoService.addEvent(eventoDto);
+	    return evento.toDto();
 	}
-	
-
 }

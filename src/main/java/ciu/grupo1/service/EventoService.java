@@ -42,9 +42,13 @@ public class EventoService {
 	
 	@Transactional
 	public Evento addEvent(EventoDto eventoDto) {
-		Evento evento = eventoDto.toModel();
-		EstadoEvento ee = estadoEventoRepository.findByNombreEstadoEvento(FaseEvento.DISPONIBLE);
+		EstadoEvento estadoPredeterminado = estadoEventoRepository.findByNombreEstadoEvento(FaseEvento.DISPONIBLE);
+		 if (estadoPredeterminado == null) {
+	            estadoPredeterminado = new EstadoEvento(FaseEvento.DISPONIBLE);
+	            estadoEventoRepository.save(estadoPredeterminado);
+	        }
 		TipoEvento te = tipoEventoRepository.findByNombre(CategoriaEvento.valueOf(eventoDto.getTipoEvento().getNombre().toUpperCase()));
+		Evento evento = eventoDto.toModel(estadoPredeterminado, te);
 		evento.setId(UUID.randomUUID());
 		evento.setFechaEvento(eventoDto.getFechaEvento());
 		evento.setHoraInicio(eventoDto.getHoraInicio());
@@ -52,7 +56,7 @@ public class EventoService {
 		evento.setCapacidad(eventoDto.getCapacidad());
 		evento.setSala(eventoDto.getSala());
 		evento.setTipo(te);
-		evento.setEstado(ee);
+		evento.setEstado(estadoPredeterminado);
 		eventoRepository.save(evento);
 		
 		return evento;
