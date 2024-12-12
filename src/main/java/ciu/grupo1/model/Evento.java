@@ -5,11 +5,16 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.UUID;
 
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.ParamDef;
+import org.hibernate.annotations.SQLDelete;
 
 import ciu.grupo1.dto.EstadoEventoDto;
 import ciu.grupo1.dto.EventoDto;
 import ciu.grupo1.dto.TipoEventoDto;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
@@ -26,6 +31,15 @@ import jakarta.persistence.Table;
 			@NamedAttributeNode("estado"),
 			@NamedAttributeNode("tipo")
 	}	
+)
+@SQLDelete(sql = "UPDATE eventos.eventos SET deleted=true WHERE id = ?")
+@FilterDef(
+    name = "deletedEventFilter",
+    parameters = @ParamDef(name = "isDeleted", type = Boolean.class)
+)
+@Filter(
+    name = "deletedEventFilter",
+    condition = "deleted = :isDeleted"
 )
 public class Evento implements Serializable{
 
@@ -49,6 +63,9 @@ public class Evento implements Serializable{
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "tipo", referencedColumnName = "id") 
 	private TipoEvento tipo;
+	
+	@Column(name = "deleted", nullable = false)
+	private Boolean deleted = false;
 	
 	public EventoDto toDto() {
 		EventoDto eventoDto = new EventoDto();
@@ -136,5 +153,13 @@ public class Evento implements Serializable{
 
 	public void setTipo(TipoEvento tipo) {
 		this.tipo = tipo;
+	}
+	
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
 	}
 }
