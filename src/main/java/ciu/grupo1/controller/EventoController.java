@@ -42,13 +42,13 @@ public class EventoController {
 		return ResponseEntity.ok(eventoDto);
 	}
 	
-	@PostMapping("/crearEvento")
+	@PostMapping()
 	public EventoDto addNewEvent(@RequestBody EventoDto eventoDto) {
 	    Evento evento = eventoService.addEvent(eventoDto);
 	    return evento.toDto();
 	}
 	
-	@PutMapping("/editar/{idEvento}")
+	@PutMapping("/{idEvento}")
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	public ResponseEntity<EventoDto> editEvent(@PathVariable UUID idEvento, @RequestBody EventoDto eventoDto) {
 	    Evento eventoActualizado = eventoService.editEvent(idEvento, eventoDto);
@@ -58,7 +58,7 @@ public class EventoController {
 	    return ResponseEntity.ok(eventoActualizado.toDto());
 	}
 	
-	@DeleteMapping("/borrar/{idEvento}")
+	@DeleteMapping("/{idEvento}")
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	public ResponseEntity<String> deleteEvent(@PathVariable UUID idEvento) {
 	    try {
