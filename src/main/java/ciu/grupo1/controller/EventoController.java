@@ -1,6 +1,5 @@
 package ciu.grupo1.controller;
 
-
 import java.util.List;
 import java.util.UUID;
 
@@ -37,7 +36,7 @@ public class EventoController {
 	}
 	
 	@GetMapping("/{idEvento}")
-	@PreAuthorize("hasAuthority('ROLE_USER')")
+//	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public ResponseEntity<EventoDto> buscarEventoPorId(@PathVariable String idEvento){
 		EventoDto eventoDto = this.eventoService.getEvento(idEvento);
 		return ResponseEntity.ok(eventoDto);
@@ -50,7 +49,7 @@ public class EventoController {
 	}
 	
 	@PutMapping("/{idEvento}")
-	//@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+//	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	public ResponseEntity<EventoDto> editEvent(@PathVariable UUID idEvento, @RequestBody EventoDto eventoDto) {
 	    Evento eventoActualizado = eventoService.editEvent(idEvento, eventoDto);
 	    if (eventoActualizado == null) {
@@ -71,16 +70,5 @@ public class EventoController {
 	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al eliminar el evento");
 	    }
 	}
-
-//	@DeleteMapping("/{idEvento}")
-//	//@PreAuthorize("hasAuthority('ROLE_ADMIN')")
-//	public ResponseEntity<Void> deleteEvent(@PathVariable UUID idEvento) {
-//	    try {
-//	        eventoService.deleteEvent(idEvento);
-//	        return ResponseEntity.noContent().build();
-//	    } catch (IllegalArgumentException e) {
-//	        return ResponseEntity.notFound().build();
-//	    }
-//	}
 
 }

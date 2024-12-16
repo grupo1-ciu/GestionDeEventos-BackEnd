@@ -98,28 +98,10 @@ public class EventoService {
 	        evento.setEstado(nuevoEstado);
 	    }
 
-//	    if (eventoDto.getEstadoEvento() != null) {
-//	        EstadoEvento nuevoEstado = estadoEventoRepository.findByNombreEstadoEvento(
-//	            FaseEvento.valueOf(eventoDto.getEstadoEvento().getNombreEstado().toUpperCase())
-//	        );
-//	        if (nuevoEstado == null) {
-//	            throw new IllegalArgumentException("Estado de evento no válido: " + eventoDto.getEstadoEvento().getNombreEstado());
-//	        }
-//	        evento.setEstado(nuevoEstado);
-//	    }
-
 	    eventoRepository.save(evento);
 
 	    return evento;
 	}
-	
-//	@Transactional
-//	public void deleteEvent(UUID idEvento) {
-//	    if (!eventoRepository.existsById(idEvento)) {
-//	        throw new IllegalArgumentException("Evento con ID " + idEvento + " no encontrado.");
-//	    }
-//	    eventoRepository.deleteById(idEvento);
-//	}
 	
 	@Transactional
 	public void deleteEvent(UUID idEvento) {
