@@ -36,7 +36,7 @@ public class EventoController {
 	}
 	
 	@GetMapping("/{idEvento}")
-//	@PreAuthorize("hasAuthority('ROLE_USER')")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public ResponseEntity<EventoDto> buscarEventoPorId(@PathVariable String idEvento){
 		EventoDto eventoDto = this.eventoService.getEvento(idEvento);
 		return ResponseEntity.ok(eventoDto);
@@ -48,8 +48,8 @@ public class EventoController {
 	    return evento.toDto();
 	}
 	
-	@PutMapping("/{idEvento}")
-//	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+	@PutMapping("/editar/{idEvento}")
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	public ResponseEntity<EventoDto> editEvent(@PathVariable UUID idEvento, @RequestBody EventoDto eventoDto) {
 	    Evento eventoActualizado = eventoService.editEvent(idEvento, eventoDto);
 	    if (eventoActualizado == null) {
@@ -58,8 +58,8 @@ public class EventoController {
 	    return ResponseEntity.ok(eventoActualizado.toDto());
 	}
 	
-	@DeleteMapping("/{idEvento}")
-//	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+	@DeleteMapping("/borrar/{idEvento}")
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	public ResponseEntity<String> deleteEvent(@PathVariable UUID idEvento) {
 	    try {
 	        eventoService.deleteEvent(idEvento);
