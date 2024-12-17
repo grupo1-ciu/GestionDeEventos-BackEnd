@@ -16,19 +16,16 @@ import ciu.grupo1.model.Evento;
 public interface EventoRepository extends JpaRepository<Evento, UUID>{
 	
 	@EntityGraph(value = "EventoWithEstadoAndTipoEvento")
-	@Query("SELECT e FROM Evento e WHERE e.deleted = false")
 	public List<Evento> findAll();
 	
 	@EntityGraph(value = "EventoWithEstadoAndTipoEvento")
 	@Query("""
-            SELECT e FROM Evento e 
-            WHERE e.estado.nombreEstadoEvento IN ('DISPONIBLE', 'EN_CURSO', 'POSPUESTO')
-              AND e.deleted = false
-            """)
+			SELECT e FROM Evento e 
+			WHERE e.estado.nombreEstadoEvento IN('DISPONIBLE', 'EN_CURSO', 'POSPUESTO')
+			""")
 	public List<Evento> findAllDisponibles();
 	
 	@EntityGraph(value = "EventoWithEstadoAndTipoEvento")
-	 @Query("SELECT e FROM Evento e WHERE e.id = :idEvento AND e.deleted = false")
 	public Optional<Evento> findById(UUID idEvento);
 
 }

@@ -9,6 +9,7 @@ import ciu.grupo1.model.FaseEvento;
 @Repository
 public interface EstadoEventoRepository extends JpaRepository<EstadoEvento, Integer> {
 	
-	public EstadoEvento findByNombreEstadoEvento(FaseEvento nombreEstadoEvento);
+	public EstadoEvento findByNombreEstadoEvento(FaseEvento faseEvento);
 	
+	public EstadoEvento findByNombreEstadoEvento(String faseEvento);
 }

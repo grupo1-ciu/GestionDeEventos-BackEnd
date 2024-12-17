@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ciu.grupo1.dto.EstadoInscripcionDto;
 import ciu.grupo1.dto.InscripcionDto;
 import ciu.grupo1.model.EstadoInscripcion;
-import ciu.grupo1.model.Evento;
 import ciu.grupo1.model.Inscripcion;
 import ciu.grupo1.model.TipoEstadoInscripcion;
 import ciu.grupo1.model.Usuario;

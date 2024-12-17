@@ -2,10 +2,7 @@ package ciu.grupo1.dto;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-
-import ciu.grupo1.model.EstadoEvento;
 import ciu.grupo1.model.Evento;
-import ciu.grupo1.model.TipoEvento;
 
 public class EventoDto {
 	
@@ -18,7 +15,7 @@ public class EventoDto {
 	private TipoEventoDto tipoEvento;
 	private EstadoEventoDto estadoEvento;
 	
-	public Evento toModel(EstadoEvento estadoEvento, TipoEvento tipoEvento) {
+	public Evento toModel() {
 		Evento evento = new Evento();
 		
 		evento.setFechaEvento(fechaEvento);
@@ -26,8 +23,6 @@ public class EventoDto {
 		evento.setDescripcion(descripcion);
 		evento.setSala(sala);
 		evento.setCapacidad(capacidad);
-		evento.setTipo(tipoEvento);
-		evento.setEstado(estadoEvento);
 		
 		return evento;
 	}

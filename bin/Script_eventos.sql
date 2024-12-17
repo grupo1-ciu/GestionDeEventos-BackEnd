@@ -69,35 +69,6 @@ CREATE TABLE eventos.inscripciones(
 	CONSTRAINT inscripciones_estadoinscripcion_fkey FOREIGN KEY (id_estado_inscripcion) REFERENCES eventos.estados_inscripciones(id)
 );
 
-/*TABLA DE LOCALIZACION o LOCACIONES*/
-CREATE TABLE eventos.locaciones(
- 	id UUID NOT NULL,
-    nombre VARCHAR(255) NOT NULL,
-    capacidad_maxima INT NOT NULL,
-    direccion VARCHAR(255) NOT NULL,
-    tiene_estacionamiento BOOLEAN NOT NULL DEFAULT FALSE,
-    fecha_creacion TIMESTAMP DEFAULT NOW(),
-    fecha_actualizacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    CONSTRAINT id_locacion PRIMARY KEY (id)
-);
-CREATE TABLE eventos.locaciones_seq (
-    id INT NOT NULL,
-    next_val INT NOT NULL,
-    CONSTRAINT id_locacionSeq PRIMARY KEY (id)
-);
-
-
-
-
-/*estos son insices para q sea mas facil buscar*/
-CREATE INDEX idx_nombre ON locaciones(nombre);
-CREATE INDEX idx_capacidad_maxima ON locaciones(capacidad_maxima);
-
-select * from eventos.locaciones l;
-select * from eventos.locaciones_seq ls;
-/*DROP table locaciones;
-DROP table locaciones_seq;*/
-
 INSERT INTO eventos.roles (nombre) VALUES
 	('ROLE_USER'),
 	('ROLE_ADMIN'),
@@ -227,12 +198,7 @@ INSERT INTO eventos.inscripciones (id, id_usuario, id_evento, id_estado_inscripc
 
 SELECT * FROM eventos.usuarios u;
 
-
-
-select * from eventos.usuarios_roles ur ;
-
-SELECT * FROM eventos.inscripciones i;		
-SELECT * FROM eventos.estados_inscripciones ei ;
+SELECT * FROM eventos.inscripciones i;
 
 SELECT * FROM eventos.usuarios u 
 	LEFT JOIN 
@@ -244,7 +210,6 @@ SELECT * FROM eventos.usuarios u
 SELECT * FROM eventos.eventos e;
 
 SELECT * FROM eventos.estados_eventos ee;
-SHOW CREATE TABLE inscripciones;
 
 -- SELECT u.nombre, u.apellido, r.nombre, i.id_evento, ei.nombre FROM eventos.usuarios u
 -- 	LEFT JOIN eventos.usuarios_roles ur
