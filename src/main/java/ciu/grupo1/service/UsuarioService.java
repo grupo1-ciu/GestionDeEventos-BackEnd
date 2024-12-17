@@ -2,6 +2,7 @@ package ciu.grupo1.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import ciu.grupo1.dto.UsuarioDto;
 import ciu.grupo1.dto.UsuarioLoginDto;
 import ciu.grupo1.dto.UsuarioRegistroDto;
 import ciu.grupo1.model.Rol;
@@ -40,12 +40,21 @@ public class UsuarioService implements UserDetailsService {
 
     @Override
     public UserInfoDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    	Optional <Usuario> usuarioDetalles = usuarioRepository.findWithUsuariosRolesRolByEmail(username); // Asumiendo que el 'email' es usado como nombre de usuario.
-//        Converting Usuario to UserDetails
+    	Optional <Usuario> usuarioDetalles = usuarioRepository.findWithUsuariosRolesRolByEmail(username);
+
         return usuarioDetalles.map(UserInfoDetails::new)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
     }
+    
+    public List<Usuario> getUsuarios(){
+    	return this.usuarioRepository.findAll();
+    }
 
+    public Usuario obtenerUsuarioPorId(UUID idUsuario) {
+        Optional<Usuario> usuario = usuarioRepository.findById(idUsuario);
+        return usuario.orElse(null);
+    }
+    
     public String addUser(UsuarioRegistroDto usuarioDto) {
     	Usuario usuario = usuarioDto.toModel(true);
         // Encode password before saving the user
@@ -64,20 +73,29 @@ public class UsuarioService implements UserDetailsService {
     }
     
     @Transactional(readOnly = true)
+    public Optional<Usuario> getByEmail(String email) {
+    	return this.usuarioRepository.findByEmail(email);
+    }
+    
+    @Transactional(readOnly = true)
     public UsuarioLoginDto getUsuarioLoginDtoWithRolesRol(String email) {
+
     	UsuarioLoginDto usuarioLoginDto = new UsuarioLoginDto();
-    	Optional<Usuario> usuario = this.usuarioRepository.findWithUsuariosRolesRolByEmail(email);
+		Usuario usuario = this.usuarioRepository.findWithUsuariosRolesRolByEmail(email).orElse(null);
     	//Roles del usuario que encontré con el email recibido por parámetro.
-    	List<String> roles = (usuario.get().getUsuarioRoles().stream()
+    	List<String> roles = (usuario.getUsuarioRoles().stream()
     							.map(ur -> ur.getRol().getNombre().toString())
     							.collect(Collectors.toList()));
     	
-    	usuarioLoginDto.setNombre(usuario.get().getNombre());
-    	usuarioLoginDto.setApellido(usuario.get().getApellido());
+    	usuarioLoginDto.setNombre(usuario.getNombre());
+    	usuarioLoginDto.setApellido(usuario.getApellido());
     	usuarioLoginDto.setRoles(roles);
+    	usuarioLoginDto.setEmail(usuario.getEmail());
     	
     	return usuarioLoginDto;
+
     }
+
     
     public List<String> getRolesByUsuarioEmail(String email) {
     	UsuarioLoginDto usuarioLoginDto = this.getUsuarioLoginDtoWithRolesRol(email);

@@ -1,11 +1,11 @@
 package ciu.grupo1.dto;
 
 
+
 public class UsuarioDto {
 	
 	protected String nombre;
 	protected String apellido;
-	
 	
 	public String getNombre() {
 		return nombre;
